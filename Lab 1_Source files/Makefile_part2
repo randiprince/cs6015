@@ -1,0 +1,26 @@
+#Makefile - CS6015 Lab 1
+#Targets and what they do:
+#build runs the executable
+#program creates the executable
+#*.o targets compile .cpp and .h files into an o file
+#clean removes all files and executables
+
+CXXSOURCE = Caps.o Clothing.o main.o Pants.o
+HEADERS = Caps.h Clothing.h Pants.h
+CXXFLAGS = --std=c++14
+COMPILER = c++
+COMPILEOPTS = -c
+LINKINGOPTS = -o
+objects := $(wildcard *.o)
+run:
+	./program
+build: program
+program: $(CXXSOURCE)
+	$(COMPILER) $(CXXFLAGS) $(LINKINGOPTS) program $(CXXSOURCE)
+$(objects): %.o: %.cpp %.h
+	$(COMPILER) $(COMPILEOPTS) $< -o $@
+.PHONY: clean build run
+clean:
+	rm -rf *.o program
+printM:
+	echo $(CXXSOURCE) $(HEADERS) $(CXXFLAGS) $(COMPILER) $(COMPILEOPTS) $(LINKINGOPTS)

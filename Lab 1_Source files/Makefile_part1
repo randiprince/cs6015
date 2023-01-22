@@ -1,0 +1,22 @@
+#Makefile - CS6015 Lab 1
+#Targets and what they do:
+#build runs the executable
+#program creates the executable
+#*.o targets compile .cpp and .h files into an o file
+#clean removes all files and executables
+
+run:
+	./program
+build: program
+program: Caps.o Clothing.o main.o Pants.o
+	c++ Caps.o Clothing.o main.o Pants.o -o program
+Caps.o: Caps.cpp Caps.h
+	c++ -c Caps.cpp
+Clothing.o: Clothing.cpp Clothing.h
+	c++ -c Clothing.cpp
+main.o: main.cpp Caps.h Clothing.h Pants.h
+	c++ -c main.cpp
+Pants.o: Pants.cpp Pants.h
+	c++ -c Pants.cpp
+clean:
+	rm -rf *.o program

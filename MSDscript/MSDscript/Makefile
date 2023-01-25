@@ -5,8 +5,8 @@
 #*.o targets compile .cpp and .h files into an o file
 #clean removes all files and executables
 
-CXXSOURCE = main.o commandLine.o
-HEADERS = commandLine.hpp catch.h
+CXXSOURCE = main.o commandLine.o expr.o
+HEADERS = commandLine.hpp catch.h expr.hpp
 CXXFLAGS = --std=c++14
 COMPILER = c++
 COMPILEOPTS = -c
@@ -21,8 +21,8 @@ build:
 	msdscript
 msdscript: $(CXXSOURCE)
 	$(COMPILER) $(CXXFLAGS) $(LINKINGOPTS) msdscript $(CXXSOURCE)
-$(objects): %.o: %.cpp %.hpp %.h
+$(objects): %.o: %.cpp %.hpp
 	$(COMPILER) $(COMPILEOPTS) $< -o $@
-.PHONY: clean build run test
+.PHONY: clean test
 clean:
 	rm -rf *.o msdscript

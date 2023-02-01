@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include "commandLine.hpp"
+#include "tests.cpp"
 
 int main(int argc, char * argv[]) {
     use_arguments(argc, argv);

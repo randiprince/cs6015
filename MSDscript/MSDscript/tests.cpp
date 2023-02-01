@@ -110,16 +110,19 @@ TEST_CASE("Has Variable Function") {
         CHECK((new Num(0))->has_variable() == false);
     }
     
-    SECTION("ADD has variable") {
+    SECTION("ADD has variable") { //add/fix
         CHECK((new Add(new Num(1),new Num(2)))->has_variable() == false);
         CHECK((new Add(new Num(1),new Num(2)))->has_variable() == false);
         CHECK((new Add(new Num(1),new Num(2)))->has_variable() == false);
+        CHECK((new Add(new Variable("x"),new Num(2)))->has_variable() == true);
+
     }
     
-    SECTION("MULT has variable") {
+    SECTION("MULT has variable") { //fix
         CHECK((new Mult(new Num(1),new Num(2)))->has_variable() == false);
         CHECK((new Mult(new Num(0),new Num(0)))->has_variable() == false);
         CHECK((new Mult(new Num(-50),new Num(4)))->has_variable() == false);
+        CHECK((new Mult(new Variable("a"),new Num(4)))->has_variable() == true);
     }
     
     SECTION("VARIABLE has variable") {
@@ -127,8 +130,8 @@ TEST_CASE("Has Variable Function") {
         CHECK((new Variable("codingisfun"))->has_variable() == true);
         CHECK((new Variable(""))->has_variable() == true);
         CHECK((new Variable(" "))->has_variable() == true);
-        CHECK((new Add(new Variable("m"), new Num(21)))->has_variable() == false);
-        CHECK((new Mult(new Variable("s"), new Num(23)))->has_variable() == false);
+        CHECK((new Add(new Variable("m"), new Num(21)))->has_variable() == true);
+        CHECK((new Mult(new Variable("s"), new Num(23)))->has_variable() == true);
     }
 }
 
@@ -143,14 +146,14 @@ TEST_CASE("Substitution (subst) function") {
         CHECK((new Num(1))->subst("0", new Num(0))->equals(new Num(0)) == false);
     }
     
-    SECTION("ADD Expr subst") {
+    SECTION("ADD Expr subst") { //fix
         CHECK((new Add(new Variable("R"), new Num(1)))->subst("R", new Variable("P"))->equals(new Add(new Variable("P"), new Num(1))) == true);
         CHECK((new Add(new Variable("M"), new Num(0)))->subst("M", new Variable("S"))->equals(new Add(new Variable("S"), new Num(0))) == true);
         CHECK((new Add(new Variable("R"), new Num(1)))->subst("R", new Variable("P"))->equals(new Add(new Variable("R"), new Num(1))) == false);
         CHECK((new Add(new Variable("h"), new Num(-8764)))->subst("h", new Variable("u"))->equals(new Add(new Variable("u"), new Num(1))) == false);
     }
     
-    SECTION("MULT Expr subst") {
+    SECTION("MULT Expr subst") { // fix
         CHECK((new Mult(new Variable("d"), new Num(42)))->subst("d", new Variable("q"))->equals(new Mult(new Variable("q"), new Num(42))) == true);
         CHECK((new Mult(new Variable("d"), new Num(42)))->subst("d", new Variable("q"))->equals(new Mult(new Variable("q"), new Num(42))) == true);
         CHECK((new Mult(new Variable("i"), new Num(0)))->subst("i", new Variable("y"))->equals(new Mult(new Variable("y"), new Num(0))) == true);
@@ -163,5 +166,11 @@ TEST_CASE("Substitution (subst) function") {
         CHECK((new Variable("R"))->subst("R", new Variable("r"))->equals(new Variable("r")) == true);
         CHECK((new Variable("a"))->subst("a", new Variable("b"))->equals(new Variable("b")) == true);
         CHECK((new Variable("h"))->subst("h", new Variable("h"))->equals(new Variable("h")) == true);
+        CHECK( (new Add(new Variable("x"), new Num(7)))
+               ->subst("x", new Variable("y"))
+               ->equals(new Add(new Variable("y"), new Num(7))) );
+        CHECK( (new Variable("x"))
+               ->subst("x", new Add(new Variable("y"),new Num(7)))
+               ->equals(new Add(new Variable("y"),new Num(7))) );
     }
 }

@@ -14,7 +14,7 @@
 class Expr {
 public:
     virtual bool equals(Expr *e) = 0;
-    virtual int interp()=0;
+    virtual int interp() = 0;
     virtual bool has_variable() = 0;
     virtual Expr* subst(std::string s, Expr *e) = 0;
 };
@@ -22,6 +22,7 @@ public:
 class Num : public Expr {
 public:
     int val;
+    
     Num(int val);
     bool equals(Expr *expr);
     int interp();
@@ -29,7 +30,7 @@ public:
     Expr* subst(std::string s, Expr *e);
 };
 
-class Add : public Expr {
+class Add : public Expr { // add expr to name
 public:
     Expr *lhs;
     Expr *rhs;

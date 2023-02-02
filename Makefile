@@ -6,7 +6,7 @@
 #clean removes all files and executables
 
 CXXSOURCE = MSDscript/MSDscript/main.o MSDscript/MSDscript/commandLine.o MSDscript/MSDscript/expr.o
-HEADERS = MSDscript/MSDscript/commandLine.hpp MSDscript/MSDscriptexpr.hpp
+HEADERS = MSDscript/MSDscript/commandLine.hpp MSDscript/MSDscript/expr.hpp
 CXXFLAGS = --std=c++14
 COMPILER = c++
 COMPILEOPTS = -c

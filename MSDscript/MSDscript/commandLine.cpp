@@ -5,9 +5,10 @@
 //  Created by Randi Prince on 1/15/23.
 //
 #define CATCH_CONFIG_RUNNER
-
-#include "catch.h"
 #include "commandLine.hpp"
+#include "catch.h"
+#include <iostream>
+#include <cstdlib>
 
 void use_arguments(int argc, char * argv[]) {
     bool testSeen = false;
@@ -29,10 +30,10 @@ void use_arguments(int argc, char * argv[]) {
                 }
                 std::cout << "Test passed!" << std::endl;
                 testSeen = true;
-                continue;
+            } else {
+                std::cerr << "Test already seen..." << std::endl;
+                exit(1);
             }
-            std::cerr << "Test already seen..." << std::endl;
-            exit(1);
         } else {
             std::cerr << "Command not found" << std::endl;
             exit(1);

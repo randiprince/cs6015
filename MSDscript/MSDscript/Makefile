@@ -13,16 +13,17 @@ COMPILEOPTS = -c
 LINKINGOPTS = -o
 objects := $(wildcard *.o)
 
-msdscript: $(CXXSOURCE)
-	$(COMPILER) $(CXXFLAGS) $(LINKINGOPTS) msdscript $(CXXSOURCE)
+MSDscript: $(CXXSOURCE)
+	$(COMPILER) $(CXXFLAGS) $(LINKINGOPTS) MSDscript $(CXXSOURCE)
+
 	
 .PHONY: clean test
 
-run: msdscript
-	./msdscript
+run: MSDscript
+	./MSDscript
 	
-test: msdscript
-	./msdscript --test
+test: MSDscript
+	./MSDscript --test
 	
 main.o: main.cpp $(HEADERS)
 	$(COMPILER) $(CXXFLAGS) $(COMPILEOPTS) main.cpp
@@ -34,4 +35,4 @@ expr.o: expr.cpp $(HEADERS)
 	$(COMPILER) $(CXXFLAGS) $(COMPILEOPTS) expr.cpp
 
 clean:
-	rm -rf *.o msdscript
+	rm -rf *.o MSDscript

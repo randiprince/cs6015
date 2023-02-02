@@ -6,7 +6,6 @@
 //
 
 #include "expr.hpp"
-#include "catch.h"
 #include <stdexcept>
 
 Num::Num(int val){

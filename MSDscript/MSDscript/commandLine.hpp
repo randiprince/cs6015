@@ -8,8 +8,9 @@
 #ifndef commandLine_hpp
 #define commandLine_hpp
 
-#include <stdio.h>
-#include <iostream>
+//#include <stdio.h>
+//#include <iostream>
+//#include "catch.h"
 
 void use_arguments(int argc, char * argv[]);
 

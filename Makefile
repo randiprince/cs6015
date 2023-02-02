@@ -35,4 +35,4 @@ expr.o: MSDscript/MSDscript/expr.cpp $(HEADERS)
 	$(COMPILER) $(CXXFLAGS) $(COMPILEOPTS) expr.cpp
 
 clean:
-	rm -rf *.o MSDscript/MSDscript/MSDscript
+	rm -rf MSDscript/MSDscript/*.o MSDscript/MSDscript/MSDscript

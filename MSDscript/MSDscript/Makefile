@@ -6,23 +6,32 @@
 #clean removes all files and executables
 
 CXXSOURCE = main.o commandLine.o expr.o
-HEADERS = commandLine.hpp catch.h expr.hpp
+HEADERS = commandLine.hpp expr.hpp
 CXXFLAGS = --std=c++14
 COMPILER = c++
 COMPILEOPTS = -c
 LINKINGOPTS = -o
 objects := $(wildcard *.o)
 
-run: msdscript
-	./msdscript
-test: msdscript
-	./msdscript --test
-build:
-	msdscript
 msdscript: $(CXXSOURCE)
 	$(COMPILER) $(CXXFLAGS) $(LINKINGOPTS) msdscript $(CXXSOURCE)
-$(objects): %.o: %.cpp %.hpp
-	$(COMPILER) $(COMPILEOPTS) $< -o $@
+	
 .PHONY: clean test
+
+run: msdscript
+	./msdscript
+	
+test: msdscript
+	./msdscript --test
+	
+main.o: main.cpp $(HEADERS)
+	$(COMPILER) $(CXXFLAGS) $(COMPILEOPTS) main.cpp
+	
+commandLine.o: commandLine.cpp $(HEADERS)
+	$(COMPILER) $(CXXFLAGS) $(COMPILEOPTS) commandLine.cpp
+
+expr.o: expr.cpp $(HEADERS)
+	$(COMPILER) $(CXXFLAGS) $(COMPILEOPTS) expr.cpp
+
 clean:
 	rm -rf *.o msdscript

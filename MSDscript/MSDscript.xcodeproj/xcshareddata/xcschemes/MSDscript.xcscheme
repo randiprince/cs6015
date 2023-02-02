@@ -33,9 +33,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "6365FC51298C244D006BA324"
-               BuildableName = "msdscript_test.xctest"
-               BlueprintName = "msdscript_test"
+               BlueprintIdentifier = "635F4A08298C491C00070AAD"
+               BuildableName = "test.xctest"
+               BlueprintName = "test"
                ReferencedContainer = "container:MSDscript.xcodeproj">
             </BuildableReference>
          </TestableReference>

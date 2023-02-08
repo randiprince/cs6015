@@ -17,7 +17,7 @@ MSDscript: $(CXXSOURCE)
 	$(COMPILER) $(CXXFLAGS) $(LINKINGOPTS) MSDscript/MSDscript/MSDscript $(CXXSOURCE)
 
 	
-.PHONY: clean test
+.PHONY: clean test showdoc
 
 run: MSDscript
 	./MSDscript/MSDscript/MSDscript
@@ -36,3 +36,8 @@ expr.o: MSDscript/MSDscript/expr.cpp $(HEADERS)
 
 clean:
 	rm -rf MSDscript/MSDscript/*.o MSDscript/MSDscript/MSDscript
+doc: MSDscript
+	cd MSDscript/MSDscript/documentation && doxygen Doxyfile
+
+showdoc:
+	cd MSDscript/MSDscript/documentation/html && open index.html

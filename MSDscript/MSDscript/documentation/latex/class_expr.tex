@@ -1,0 +1,114 @@
+\hypertarget{class_expr}{}\doxysection{Expr Class Reference}
+\label{class_expr}\index{Expr@{Expr}}
+
+
+{\ttfamily \#include $<$expr.\+hpp$>$}
+
+Inheritance diagram for Expr\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_expr}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual bool \mbox{\hyperlink{class_expr_abf9cdb765fb84304881789d273d7594f}{equals}} (\mbox{\hyperlink{class_expr}{Expr}} $\ast$e)=0
+\begin{DoxyCompactList}\small\item\em determines if one \mbox{\hyperlink{class_expr}{Expr}} is equal to another \mbox{\hyperlink{class_expr}{Expr}} \end{DoxyCompactList}\item 
+virtual int \mbox{\hyperlink{class_expr_aeba8585d8225419d49166371306542c1}{interp}} ()=0
+\begin{DoxyCompactList}\small\item\em returns an int for the value of an expression. \end{DoxyCompactList}\item 
+virtual bool \mbox{\hyperlink{class_expr_a92dc26078993a4b9721ea732274a435c}{has\+\_\+variable}} ()=0
+\begin{DoxyCompactList}\small\item\em function to determine if the expr has a var\+Expr \end{DoxyCompactList}\item 
+virtual \mbox{\hyperlink{class_expr}{Expr}} $\ast$ \mbox{\hyperlink{class_expr_a7b1962354ae431ccb7b7e0ad3f164887}{subst}} (std\+::string s, \mbox{\hyperlink{class_expr}{Expr}} $\ast$e)=0
+\begin{DoxyCompactList}\small\item\em Everywhere that the expression (whose subst method is called) contains a variable matching the string, the result Expr$\ast$ should have the given replacement, instead. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+@brief \mbox{\hyperlink{class_expr}{Expr}} class This is a parent class called \mbox{\hyperlink{class_expr}{Expr}}. It has virtual methods used by sub classes. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_expr_abf9cdb765fb84304881789d273d7594f}\label{class_expr_abf9cdb765fb84304881789d273d7594f}} 
+\index{Expr@{Expr}!equals@{equals}}
+\index{equals@{equals}!Expr@{Expr}}
+\doxysubsubsection{\texorpdfstring{equals()}{equals()}}
+{\footnotesize\ttfamily virtual bool Expr\+::equals (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_expr}{Expr}} $\ast$}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+determines if one \mbox{\hyperlink{class_expr}{Expr}} is equal to another \mbox{\hyperlink{class_expr}{Expr}} 
+
+
+\begin{DoxyParams}{Parameters}
+{\em e} & to compare the value of \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+boolean 
+\end{DoxyReturn}
+
+
+Implemented in \mbox{\hyperlink{class_num_expr_a2400501d4eeb6dc4a47ed3ec471154ca}{Num\+Expr}}, \mbox{\hyperlink{class_add_expr_ac45db119e75929dfdb6a0be61329bfac}{Add\+Expr}}, \mbox{\hyperlink{class_mult_expr_a4717aa38bef4200514dcf0f54d27ae72}{Mult\+Expr}}, and \mbox{\hyperlink{class_var_expr_a659e3043262bd9f797747a628249c999}{Var\+Expr}}.
+
+\mbox{\Hypertarget{class_expr_a92dc26078993a4b9721ea732274a435c}\label{class_expr_a92dc26078993a4b9721ea732274a435c}} 
+\index{Expr@{Expr}!has\_variable@{has\_variable}}
+\index{has\_variable@{has\_variable}!Expr@{Expr}}
+\doxysubsubsection{\texorpdfstring{has\_variable()}{has\_variable()}}
+{\footnotesize\ttfamily virtual bool Expr\+::has\+\_\+variable (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+function to determine if the expr has a var\+Expr 
+
+\begin{DoxyReturn}{Returns}
+boolean 
+\end{DoxyReturn}
+
+
+Implemented in \mbox{\hyperlink{class_num_expr_ad465572183e061f5caf34041b81cafd0}{Num\+Expr}}, \mbox{\hyperlink{class_add_expr_acac5ec05b02dc9d1308600027982a2ff}{Add\+Expr}}, \mbox{\hyperlink{class_mult_expr_a5ecf878efa2a106dbac38a3a83b01309}{Mult\+Expr}}, and \mbox{\hyperlink{class_var_expr_ad8e3aab06e58615fe677a7a45d6cf32e}{Var\+Expr}}.
+
+\mbox{\Hypertarget{class_expr_aeba8585d8225419d49166371306542c1}\label{class_expr_aeba8585d8225419d49166371306542c1}} 
+\index{Expr@{Expr}!interp@{interp}}
+\index{interp@{interp}!Expr@{Expr}}
+\doxysubsubsection{\texorpdfstring{interp()}{interp()}}
+{\footnotesize\ttfamily virtual int Expr\+::interp (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+returns an int for the value of an expression. 
+
+\begin{DoxyReturn}{Returns}
+int 
+\end{DoxyReturn}
+
+
+Implemented in \mbox{\hyperlink{class_num_expr_aa70ad0c18b0a55d6bdc65fd4c0de3686}{Num\+Expr}}, \mbox{\hyperlink{class_add_expr_aa3a091a578f99dccaed47d724f602f42}{Add\+Expr}}, \mbox{\hyperlink{class_mult_expr_abfc094e6141c3c78633e27bcd3539f7b}{Mult\+Expr}}, and \mbox{\hyperlink{class_var_expr_a79991fba1d40718c3074181d129d1ddf}{Var\+Expr}}.
+
+\mbox{\Hypertarget{class_expr_a7b1962354ae431ccb7b7e0ad3f164887}\label{class_expr_a7b1962354ae431ccb7b7e0ad3f164887}} 
+\index{Expr@{Expr}!subst@{subst}}
+\index{subst@{subst}!Expr@{Expr}}
+\doxysubsubsection{\texorpdfstring{subst()}{subst()}}
+{\footnotesize\ttfamily virtual \mbox{\hyperlink{class_expr}{Expr}} $\ast$ Expr\+::subst (\begin{DoxyParamCaption}\item[{std\+::string}]{s,  }\item[{\mbox{\hyperlink{class_expr}{Expr}} $\ast$}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Everywhere that the expression (whose subst method is called) contains a variable matching the string, the result Expr$\ast$ should have the given replacement, instead. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & \\
+\hline
+{\em e} & pointer \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{class_expr}{Expr}} 
+\end{DoxyReturn}
+
+
+Implemented in \mbox{\hyperlink{class_num_expr_a26f5b6f073b46fce6257f40b58109355}{Num\+Expr}}, \mbox{\hyperlink{class_add_expr_a8ae39066af6cb73fc43182c23c7d7107}{Add\+Expr}}, \mbox{\hyperlink{class_mult_expr_a5af3203238b7d4087909f96d88dfd2fa}{Mult\+Expr}}, and \mbox{\hyperlink{class_var_expr_a3689734556756c2a0ebf3f9accff4a52}{Var\+Expr}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/randiprince/cs6015/\+MSDscript/\+MSDscript/\mbox{\hyperlink{expr_8hpp}{expr.\+hpp}}\end{DoxyCompactItemize}

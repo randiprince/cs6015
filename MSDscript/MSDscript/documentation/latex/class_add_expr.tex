@@ -1,0 +1,165 @@
+\hypertarget{class_add_expr}{}\doxysection{Add\+Expr Class Reference}
+\label{class_add_expr}\index{AddExpr@{AddExpr}}
+
+
+{\ttfamily \#include $<$expr.\+hpp$>$}
+
+Inheritance diagram for Add\+Expr\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_add_expr}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_add_expr_a42e626ebbd6f085cf57e6cd40028cb8c}{Add\+Expr}} (\mbox{\hyperlink{class_expr}{Expr}} $\ast$\mbox{\hyperlink{class_add_expr_a53fe7b8cc66b2f439a42092eb0eb2d43}{lhs}}, \mbox{\hyperlink{class_expr}{Expr}} $\ast$\mbox{\hyperlink{class_add_expr_a5a4544f1e9834ff5f00af0d334ae5df5}{rhs}})
+\item 
+bool \mbox{\hyperlink{class_add_expr_ac45db119e75929dfdb6a0be61329bfac}{equals}} (\mbox{\hyperlink{class_expr}{Expr}} $\ast$expr)
+\begin{DoxyCompactList}\small\item\em determines if one \mbox{\hyperlink{class_expr}{Expr}} is equal to another \mbox{\hyperlink{class_expr}{Expr}} \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_add_expr_aa3a091a578f99dccaed47d724f602f42}{interp}} ()
+\begin{DoxyCompactList}\small\item\em returns an int for the value of an expression. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_add_expr_acac5ec05b02dc9d1308600027982a2ff}{has\+\_\+variable}} ()
+\begin{DoxyCompactList}\small\item\em function to determine if the expr has a var\+Expr \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_expr}{Expr}} $\ast$ \mbox{\hyperlink{class_add_expr_a8ae39066af6cb73fc43182c23c7d7107}{subst}} (std\+::string s, \mbox{\hyperlink{class_expr}{Expr}} $\ast$e)
+\begin{DoxyCompactList}\small\item\em Everywhere that the expression (whose subst method is called) contains a variable matching the string, the result Expr$\ast$ should have the given replacement, instead. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactItemize}
+\item 
+virtual bool \mbox{\hyperlink{class_expr_abf9cdb765fb84304881789d273d7594f}{equals}} (\mbox{\hyperlink{class_expr}{Expr}} $\ast$e)=0
+\begin{DoxyCompactList}\small\item\em determines if one \mbox{\hyperlink{class_expr}{Expr}} is equal to another \mbox{\hyperlink{class_expr}{Expr}} \end{DoxyCompactList}\item 
+virtual int \mbox{\hyperlink{class_expr_aeba8585d8225419d49166371306542c1}{interp}} ()=0
+\begin{DoxyCompactList}\small\item\em returns an int for the value of an expression. \end{DoxyCompactList}\item 
+virtual bool \mbox{\hyperlink{class_expr_a92dc26078993a4b9721ea732274a435c}{has\+\_\+variable}} ()=0
+\begin{DoxyCompactList}\small\item\em function to determine if the expr has a var\+Expr \end{DoxyCompactList}\item 
+virtual \mbox{\hyperlink{class_expr}{Expr}} $\ast$ \mbox{\hyperlink{class_expr_a7b1962354ae431ccb7b7e0ad3f164887}{subst}} (std\+::string s, \mbox{\hyperlink{class_expr}{Expr}} $\ast$e)=0
+\begin{DoxyCompactList}\small\item\em Everywhere that the expression (whose subst method is called) contains a variable matching the string, the result Expr$\ast$ should have the given replacement, instead. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_expr}{Expr}} $\ast$ \mbox{\hyperlink{class_add_expr_a53fe7b8cc66b2f439a42092eb0eb2d43}{lhs}}
+\item 
+\mbox{\hyperlink{class_expr}{Expr}} $\ast$ \mbox{\hyperlink{class_add_expr_a5a4544f1e9834ff5f00af0d334ae5df5}{rhs}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+@brief \mbox{\hyperlink{class_add_expr}{Add\+Expr}} class This is a sub class that implements \mbox{\hyperlink{class_expr}{Expr}}. It adds two expr together It implements all virtual methods of expr. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_add_expr_a42e626ebbd6f085cf57e6cd40028cb8c}\label{class_add_expr_a42e626ebbd6f085cf57e6cd40028cb8c}} 
+\index{AddExpr@{AddExpr}!AddExpr@{AddExpr}}
+\index{AddExpr@{AddExpr}!AddExpr@{AddExpr}}
+\doxysubsubsection{\texorpdfstring{AddExpr()}{AddExpr()}}
+{\footnotesize\ttfamily Add\+Expr\+::\+Add\+Expr (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_expr}{Expr}} $\ast$}]{lhs,  }\item[{\mbox{\hyperlink{class_expr}{Expr}} $\ast$}]{rhs }\end{DoxyParamCaption})}
+
+Constructor that creates new \mbox{\hyperlink{class_add_expr}{Add\+Expr}}. 
+\begin{DoxyParams}{Parameters}
+{\em lhs} & a pointer to an \mbox{\hyperlink{class_expr}{Expr}} \\
+\hline
+{\em rhs} & a pointer to an \mbox{\hyperlink{class_expr}{Expr}} \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_add_expr_ac45db119e75929dfdb6a0be61329bfac}\label{class_add_expr_ac45db119e75929dfdb6a0be61329bfac}} 
+\index{AddExpr@{AddExpr}!equals@{equals}}
+\index{equals@{equals}!AddExpr@{AddExpr}}
+\doxysubsubsection{\texorpdfstring{equals()}{equals()}}
+{\footnotesize\ttfamily bool Add\+Expr\+::equals (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_expr}{Expr}} $\ast$}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+determines if one \mbox{\hyperlink{class_expr}{Expr}} is equal to another \mbox{\hyperlink{class_expr}{Expr}} 
+
+
+\begin{DoxyParams}{Parameters}
+{\em e} & to compare the value of \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+boolean 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_expr_abf9cdb765fb84304881789d273d7594f}{Expr}}.
+
+\mbox{\Hypertarget{class_add_expr_acac5ec05b02dc9d1308600027982a2ff}\label{class_add_expr_acac5ec05b02dc9d1308600027982a2ff}} 
+\index{AddExpr@{AddExpr}!has\_variable@{has\_variable}}
+\index{has\_variable@{has\_variable}!AddExpr@{AddExpr}}
+\doxysubsubsection{\texorpdfstring{has\_variable()}{has\_variable()}}
+{\footnotesize\ttfamily bool Add\+Expr\+::has\+\_\+variable (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+function to determine if the expr has a var\+Expr 
+
+\begin{DoxyReturn}{Returns}
+boolean 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_expr_a92dc26078993a4b9721ea732274a435c}{Expr}}.
+
+\mbox{\Hypertarget{class_add_expr_aa3a091a578f99dccaed47d724f602f42}\label{class_add_expr_aa3a091a578f99dccaed47d724f602f42}} 
+\index{AddExpr@{AddExpr}!interp@{interp}}
+\index{interp@{interp}!AddExpr@{AddExpr}}
+\doxysubsubsection{\texorpdfstring{interp()}{interp()}}
+{\footnotesize\ttfamily int Add\+Expr\+::interp (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+returns an int for the value of an expression. 
+
+\begin{DoxyReturn}{Returns}
+int 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_expr_aeba8585d8225419d49166371306542c1}{Expr}}.
+
+\mbox{\Hypertarget{class_add_expr_a8ae39066af6cb73fc43182c23c7d7107}\label{class_add_expr_a8ae39066af6cb73fc43182c23c7d7107}} 
+\index{AddExpr@{AddExpr}!subst@{subst}}
+\index{subst@{subst}!AddExpr@{AddExpr}}
+\doxysubsubsection{\texorpdfstring{subst()}{subst()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_expr}{Expr}} $\ast$ Add\+Expr\+::subst (\begin{DoxyParamCaption}\item[{std\+::string}]{s,  }\item[{\mbox{\hyperlink{class_expr}{Expr}} $\ast$}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Everywhere that the expression (whose subst method is called) contains a variable matching the string, the result Expr$\ast$ should have the given replacement, instead. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & \\
+\hline
+{\em e} & pointer \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{class_expr}{Expr}} 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_expr_a7b1962354ae431ccb7b7e0ad3f164887}{Expr}}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{class_add_expr_a53fe7b8cc66b2f439a42092eb0eb2d43}\label{class_add_expr_a53fe7b8cc66b2f439a42092eb0eb2d43}} 
+\index{AddExpr@{AddExpr}!lhs@{lhs}}
+\index{lhs@{lhs}!AddExpr@{AddExpr}}
+\doxysubsubsection{\texorpdfstring{lhs}{lhs}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_expr}{Expr}}$\ast$ Add\+Expr\+::lhs}
+
+left hand side expr of \mbox{\hyperlink{class_add_expr}{Add\+Expr}} \mbox{\Hypertarget{class_add_expr_a5a4544f1e9834ff5f00af0d334ae5df5}\label{class_add_expr_a5a4544f1e9834ff5f00af0d334ae5df5}} 
+\index{AddExpr@{AddExpr}!rhs@{rhs}}
+\index{rhs@{rhs}!AddExpr@{AddExpr}}
+\doxysubsubsection{\texorpdfstring{rhs}{rhs}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_expr}{Expr}}$\ast$ Add\+Expr\+::rhs}
+
+right hand side expr of \mbox{\hyperlink{class_add_expr}{Add\+Expr}} 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/randiprince/cs6015/\+MSDscript/\+MSDscript/\mbox{\hyperlink{expr_8hpp}{expr.\+hpp}}\item 
+/\+Users/randiprince/cs6015/\+MSDscript/\+MSDscript/\mbox{\hyperlink{expr_8cpp}{expr.\+cpp}}\end{DoxyCompactItemize}

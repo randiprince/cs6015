@@ -10,6 +10,11 @@
 #include "commandLine.hpp"
 #include "tests.cpp"
 
+/**
+* \mainpage MSDScript
+* \author Randi Prince
+* \date 02-02-2023
+*/
 int main(int argc, char * argv[]) {
     use_arguments(argc, argv);
     return 0;

@@ -1,0 +1,132 @@
+\begin{theindex}
+
+  \item {/Users/randiprince/cs6015/MSDscript/MSDscript/commandLine.cpp}, 
+		\hyperpage{25}
+  \item {/Users/randiprince/cs6015/MSDscript/MSDscript/commandLine.hpp}, 
+		\hyperpage{26}
+  \item {/Users/randiprince/cs6015/MSDscript/MSDscript/expr.cpp}, 
+		\hyperpage{27}
+  \item {/Users/randiprince/cs6015/MSDscript/MSDscript/expr.hpp}, 
+		\hyperpage{27}
+  \item {/Users/randiprince/cs6015/MSDscript/MSDscript/tests.cpp}, 
+		\hyperpage{28}
+
+  \indexspace
+
+  \item {AddExpr}, \hyperpage{9}
+    \subitem {AddExpr}, \hyperpage{10}
+    \subitem {equals}, \hyperpage{10}
+    \subitem {has\_variable}, \hyperpage{11}
+    \subitem {interp}, \hyperpage{11}
+    \subitem {lhs}, \hyperpage{12}
+    \subitem {rhs}, \hyperpage{12}
+    \subitem {subst}, \hyperpage{11}
+
+  \indexspace
+
+  \item {commandLine.cpp}
+    \subitem {use\_arguments}, \hyperpage{25}
+  \item {commandLine.hpp}
+    \subitem {use\_arguments}, \hyperpage{26}
+
+  \indexspace
+
+  \item {equals}
+    \subitem {AddExpr}, \hyperpage{10}
+    \subitem {Expr}, \hyperpage{13}
+    \subitem {MultExpr}, \hyperpage{15}
+    \subitem {NumExpr}, \hyperpage{20}
+    \subitem {VarExpr}, \hyperpage{23}
+  \item {Expr}, \hyperpage{12}
+    \subitem {equals}, \hyperpage{13}
+    \subitem {has\_variable}, \hyperpage{13}
+    \subitem {interp}, \hyperpage{13}
+    \subitem {subst}, \hyperpage{13}
+
+  \indexspace
+
+  \item {has\_variable}
+    \subitem {AddExpr}, \hyperpage{11}
+    \subitem {Expr}, \hyperpage{13}
+    \subitem {MultExpr}, \hyperpage{17}
+    \subitem {NumExpr}, \hyperpage{20}
+    \subitem {VarExpr}, \hyperpage{23}
+
+  \indexspace
+
+  \item {interp}
+    \subitem {AddExpr}, \hyperpage{11}
+    \subitem {Expr}, \hyperpage{13}
+    \subitem {MultExpr}, \hyperpage{17}
+    \subitem {NumExpr}, \hyperpage{20}
+    \subitem {VarExpr}, \hyperpage{23}
+
+  \indexspace
+
+  \item {lhs}
+    \subitem {AddExpr}, \hyperpage{12}
+    \subitem {MultExpr}, \hyperpage{18}
+
+  \indexspace
+
+  \item {MultExpr}, \hyperpage{14}
+    \subitem {equals}, \hyperpage{15}
+    \subitem {has\_variable}, \hyperpage{17}
+    \subitem {interp}, \hyperpage{17}
+    \subitem {lhs}, \hyperpage{18}
+    \subitem {MultExpr}, \hyperpage{15}
+    \subitem {rhs}, \hyperpage{18}
+    \subitem {subst}, \hyperpage{17}
+
+  \indexspace
+
+  \item {NumExpr}, \hyperpage{18}
+    \subitem {equals}, \hyperpage{20}
+    \subitem {has\_variable}, \hyperpage{20}
+    \subitem {interp}, \hyperpage{20}
+    \subitem {NumExpr}, \hyperpage{19}
+    \subitem {subst}, \hyperpage{20}
+    \subitem {val}, \hyperpage{21}
+
+  \indexspace
+
+  \item {rhs}
+    \subitem {AddExpr}, \hyperpage{12}
+    \subitem {MultExpr}, \hyperpage{18}
+
+  \indexspace
+
+  \item {subst}
+    \subitem {AddExpr}, \hyperpage{11}
+    \subitem {Expr}, \hyperpage{13}
+    \subitem {MultExpr}, \hyperpage{17}
+    \subitem {NumExpr}, \hyperpage{20}
+    \subitem {VarExpr}, \hyperpage{23}
+
+  \indexspace
+
+  \item {TEST\_CASE}
+    \subitem {tests.cpp}, \hyperpage{29, 30}
+  \item {tests.cpp}
+    \subitem {TEST\_CASE}, \hyperpage{29, 30}
+
+  \indexspace
+
+  \item {use\_arguments}
+    \subitem {commandLine.cpp}, \hyperpage{25}
+    \subitem {commandLine.hpp}, \hyperpage{26}
+
+  \indexspace
+
+  \item {val}
+    \subitem {NumExpr}, \hyperpage{21}
+    \subitem {VarExpr}, \hyperpage{24}
+  \item {VarExpr}, \hyperpage{21}
+    \subitem {equals}, \hyperpage{23}
+    \subitem {has\_variable}, \hyperpage{23}
+    \subitem {interp}, \hyperpage{23}
+    \subitem {subst}, \hyperpage{23}
+    \subitem {val}, \hyperpage{24}
+    \subitem {VarExpr}, \hyperpage{22}
+
+\end{theindex}

@@ -64,12 +64,6 @@ build CMakeFiles/MSDscript.dir/expr.cpp.o: CXX_COMPILER__MSDscript_Debug /Users/
   OBJECT_DIR = CMakeFiles/MSDscript.dir
   OBJECT_FILE_DIR = CMakeFiles/MSDscript.dir
 
-build CMakeFiles/MSDscript.dir/tests.cpp.o: CXX_COMPILER__MSDscript_Debug /Users/randiprince/cs6015/MSDscript/MSDscript/tests.cpp || cmake_object_order_depends_target_MSDscript
-  DEP_FILE = CMakeFiles/MSDscript.dir/tests.cpp.o.d
-  FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk -fcolor-diagnostics -std=gnu++17
-  OBJECT_DIR = CMakeFiles/MSDscript.dir
-  OBJECT_FILE_DIR = CMakeFiles/MSDscript.dir
-
 
 # =============================================================================
 # Link build statements for EXECUTABLE target MSDscript
@@ -78,7 +72,7 @@ build CMakeFiles/MSDscript.dir/tests.cpp.o: CXX_COMPILER__MSDscript_Debug /Users
 #############################################
 # Link the executable MSDscript
 
-build MSDscript: CXX_EXECUTABLE_LINKER__MSDscript_Debug CMakeFiles/MSDscript.dir/main.cpp.o CMakeFiles/MSDscript.dir/commandLine.cpp.o CMakeFiles/MSDscript.dir/expr.cpp.o CMakeFiles/MSDscript.dir/tests.cpp.o
+build MSDscript: CXX_EXECUTABLE_LINKER__MSDscript_Debug CMakeFiles/MSDscript.dir/main.cpp.o CMakeFiles/MSDscript.dir/commandLine.cpp.o CMakeFiles/MSDscript.dir/expr.cpp.o
   FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk
   OBJECT_DIR = CMakeFiles/MSDscript.dir
   POST_BUILD = :

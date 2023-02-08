@@ -1,5 +1,5 @@
 # ninja log v5
-0	37	1675367983881955216	build.ninja	872fef8245b490ad
+0	37	1675786310888099530	build.ninja	872fef8245b490ad
 1	593	1675367573276017081	CMakeFiles/MSDscript.dir/main.cpp.o	afe6ca281bce5b9f
 1	2863	1675367575510239264	CMakeFiles/MSDscript.dir/commandLine.cpp.o	a7afe755f110b28e
 0	515	1675367573196082680	CMakeFiles/MSDscript.dir/expr.cpp.o	c48106bf38535503

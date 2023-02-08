@@ -1,0 +1,165 @@
+\hypertarget{class_mult_expr}{}\doxysection{Mult\+Expr Class Reference}
+\label{class_mult_expr}\index{MultExpr@{MultExpr}}
+
+
+{\ttfamily \#include $<$expr.\+hpp$>$}
+
+Inheritance diagram for Mult\+Expr\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_mult_expr}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_mult_expr_abd0b326f7b3f90caadecede9ddfa3856}{Mult\+Expr}} (\mbox{\hyperlink{class_expr}{Expr}} $\ast$\mbox{\hyperlink{class_mult_expr_a0b49284e5c90d2f9e55df85c37ace717}{lhs}}, \mbox{\hyperlink{class_expr}{Expr}} $\ast$\mbox{\hyperlink{class_mult_expr_ae70fd4159bdde5ae4beaade8510d9103}{rhs}})
+\item 
+bool \mbox{\hyperlink{class_mult_expr_a4717aa38bef4200514dcf0f54d27ae72}{equals}} (\mbox{\hyperlink{class_expr}{Expr}} $\ast$expr)
+\begin{DoxyCompactList}\small\item\em determines if one \mbox{\hyperlink{class_expr}{Expr}} is equal to another \mbox{\hyperlink{class_expr}{Expr}} \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_mult_expr_abfc094e6141c3c78633e27bcd3539f7b}{interp}} ()
+\begin{DoxyCompactList}\small\item\em returns an int for the value of an expression. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_mult_expr_a5ecf878efa2a106dbac38a3a83b01309}{has\+\_\+variable}} ()
+\begin{DoxyCompactList}\small\item\em function to determine if the expr has a var\+Expr \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_expr}{Expr}} $\ast$ \mbox{\hyperlink{class_mult_expr_a5af3203238b7d4087909f96d88dfd2fa}{subst}} (std\+::string s, \mbox{\hyperlink{class_expr}{Expr}} $\ast$e)
+\begin{DoxyCompactList}\small\item\em Everywhere that the expression (whose subst method is called) contains a variable matching the string, the result Expr$\ast$ should have the given replacement, instead. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactItemize}
+\item 
+virtual bool \mbox{\hyperlink{class_expr_abf9cdb765fb84304881789d273d7594f}{equals}} (\mbox{\hyperlink{class_expr}{Expr}} $\ast$e)=0
+\begin{DoxyCompactList}\small\item\em determines if one \mbox{\hyperlink{class_expr}{Expr}} is equal to another \mbox{\hyperlink{class_expr}{Expr}} \end{DoxyCompactList}\item 
+virtual int \mbox{\hyperlink{class_expr_aeba8585d8225419d49166371306542c1}{interp}} ()=0
+\begin{DoxyCompactList}\small\item\em returns an int for the value of an expression. \end{DoxyCompactList}\item 
+virtual bool \mbox{\hyperlink{class_expr_a92dc26078993a4b9721ea732274a435c}{has\+\_\+variable}} ()=0
+\begin{DoxyCompactList}\small\item\em function to determine if the expr has a var\+Expr \end{DoxyCompactList}\item 
+virtual \mbox{\hyperlink{class_expr}{Expr}} $\ast$ \mbox{\hyperlink{class_expr_a7b1962354ae431ccb7b7e0ad3f164887}{subst}} (std\+::string s, \mbox{\hyperlink{class_expr}{Expr}} $\ast$e)=0
+\begin{DoxyCompactList}\small\item\em Everywhere that the expression (whose subst method is called) contains a variable matching the string, the result Expr$\ast$ should have the given replacement, instead. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_expr}{Expr}} $\ast$ \mbox{\hyperlink{class_mult_expr_a0b49284e5c90d2f9e55df85c37ace717}{lhs}}
+\item 
+\mbox{\hyperlink{class_expr}{Expr}} $\ast$ \mbox{\hyperlink{class_mult_expr_ae70fd4159bdde5ae4beaade8510d9103}{rhs}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+@brief \mbox{\hyperlink{class_mult_expr}{Mult\+Expr}} class This is a sub class that implements \mbox{\hyperlink{class_expr}{Expr}}. It multiplies two expr together It implements all virtual methods of expr. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_mult_expr_abd0b326f7b3f90caadecede9ddfa3856}\label{class_mult_expr_abd0b326f7b3f90caadecede9ddfa3856}} 
+\index{MultExpr@{MultExpr}!MultExpr@{MultExpr}}
+\index{MultExpr@{MultExpr}!MultExpr@{MultExpr}}
+\doxysubsubsection{\texorpdfstring{MultExpr()}{MultExpr()}}
+{\footnotesize\ttfamily Mult\+Expr\+::\+Mult\+Expr (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_expr}{Expr}} $\ast$}]{lhs,  }\item[{\mbox{\hyperlink{class_expr}{Expr}} $\ast$}]{rhs }\end{DoxyParamCaption})}
+
+Constructor that creates new \mbox{\hyperlink{class_mult_expr}{Mult\+Expr}}. 
+\begin{DoxyParams}{Parameters}
+{\em lhs} & a pointer to an \mbox{\hyperlink{class_expr}{Expr}} \\
+\hline
+{\em rhs} & a pointer to an \mbox{\hyperlink{class_expr}{Expr}} \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_mult_expr_a4717aa38bef4200514dcf0f54d27ae72}\label{class_mult_expr_a4717aa38bef4200514dcf0f54d27ae72}} 
+\index{MultExpr@{MultExpr}!equals@{equals}}
+\index{equals@{equals}!MultExpr@{MultExpr}}
+\doxysubsubsection{\texorpdfstring{equals()}{equals()}}
+{\footnotesize\ttfamily bool Mult\+Expr\+::equals (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_expr}{Expr}} $\ast$}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+determines if one \mbox{\hyperlink{class_expr}{Expr}} is equal to another \mbox{\hyperlink{class_expr}{Expr}} 
+
+
+\begin{DoxyParams}{Parameters}
+{\em e} & to compare the value of \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+boolean 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_expr_abf9cdb765fb84304881789d273d7594f}{Expr}}.
+
+\mbox{\Hypertarget{class_mult_expr_a5ecf878efa2a106dbac38a3a83b01309}\label{class_mult_expr_a5ecf878efa2a106dbac38a3a83b01309}} 
+\index{MultExpr@{MultExpr}!has\_variable@{has\_variable}}
+\index{has\_variable@{has\_variable}!MultExpr@{MultExpr}}
+\doxysubsubsection{\texorpdfstring{has\_variable()}{has\_variable()}}
+{\footnotesize\ttfamily bool Mult\+Expr\+::has\+\_\+variable (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+function to determine if the expr has a var\+Expr 
+
+\begin{DoxyReturn}{Returns}
+boolean 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_expr_a92dc26078993a4b9721ea732274a435c}{Expr}}.
+
+\mbox{\Hypertarget{class_mult_expr_abfc094e6141c3c78633e27bcd3539f7b}\label{class_mult_expr_abfc094e6141c3c78633e27bcd3539f7b}} 
+\index{MultExpr@{MultExpr}!interp@{interp}}
+\index{interp@{interp}!MultExpr@{MultExpr}}
+\doxysubsubsection{\texorpdfstring{interp()}{interp()}}
+{\footnotesize\ttfamily int Mult\+Expr\+::interp (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+returns an int for the value of an expression. 
+
+\begin{DoxyReturn}{Returns}
+int 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_expr_aeba8585d8225419d49166371306542c1}{Expr}}.
+
+\mbox{\Hypertarget{class_mult_expr_a5af3203238b7d4087909f96d88dfd2fa}\label{class_mult_expr_a5af3203238b7d4087909f96d88dfd2fa}} 
+\index{MultExpr@{MultExpr}!subst@{subst}}
+\index{subst@{subst}!MultExpr@{MultExpr}}
+\doxysubsubsection{\texorpdfstring{subst()}{subst()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_expr}{Expr}} $\ast$ Mult\+Expr\+::subst (\begin{DoxyParamCaption}\item[{std\+::string}]{s,  }\item[{\mbox{\hyperlink{class_expr}{Expr}} $\ast$}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Everywhere that the expression (whose subst method is called) contains a variable matching the string, the result Expr$\ast$ should have the given replacement, instead. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & \\
+\hline
+{\em e} & pointer \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{class_expr}{Expr}} 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_expr_a7b1962354ae431ccb7b7e0ad3f164887}{Expr}}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{class_mult_expr_a0b49284e5c90d2f9e55df85c37ace717}\label{class_mult_expr_a0b49284e5c90d2f9e55df85c37ace717}} 
+\index{MultExpr@{MultExpr}!lhs@{lhs}}
+\index{lhs@{lhs}!MultExpr@{MultExpr}}
+\doxysubsubsection{\texorpdfstring{lhs}{lhs}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_expr}{Expr}}$\ast$ Mult\+Expr\+::lhs}
+
+left hand side expr of \mbox{\hyperlink{class_mult_expr}{Mult\+Expr}} \mbox{\Hypertarget{class_mult_expr_ae70fd4159bdde5ae4beaade8510d9103}\label{class_mult_expr_ae70fd4159bdde5ae4beaade8510d9103}} 
+\index{MultExpr@{MultExpr}!rhs@{rhs}}
+\index{rhs@{rhs}!MultExpr@{MultExpr}}
+\doxysubsubsection{\texorpdfstring{rhs}{rhs}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_expr}{Expr}}$\ast$ Mult\+Expr\+::rhs}
+
+right hand side expr of \mbox{\hyperlink{class_mult_expr}{Mult\+Expr}} 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/randiprince/cs6015/\+MSDscript/\+MSDscript/\mbox{\hyperlink{expr_8hpp}{expr.\+hpp}}\item 
+/\+Users/randiprince/cs6015/\+MSDscript/\+MSDscript/\mbox{\hyperlink{expr_8cpp}{expr.\+cpp}}\end{DoxyCompactItemize}

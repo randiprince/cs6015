@@ -10,11 +10,18 @@
 #include <iostream>
 #include <cstdlib>
 
+/**
+* \file commandLine.cpp
+* \brief contains use_argument function definition
+* \author Randi Prince
+*/
+
 void use_arguments(int argc, char * argv[]) {
     bool testSeen = false;
-    if (argc == 1) {
+    if (argc == 1) { // if there is no command, exit
         exit(0);
     }
+    // loop through the arguments to separate and handle each command
     for (int i = 1; i < argc; i++) {
         std::string argument = argv[i];
         if (argument == "--help") {

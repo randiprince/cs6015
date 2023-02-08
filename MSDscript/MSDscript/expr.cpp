@@ -15,6 +15,21 @@ definitions for all the sub classes of Expr class
 * \author Randi Prince
 */
 
+std::string Expr::to_string() {
+    std::stringstream stringstream;
+    this->print(stringstream);
+    return stringstream.str();
+}
+
+std::string Expr::to_string_pretty() {
+    std::stringstream stringstream;
+    this->pretty_print(stringstream);
+    return stringstream.str();
+}
+
+/***************************************************
+* NumExpr method definitions                       *
+****************************************************/
 NumExpr::NumExpr(int val){
     this->val = val;
 }
@@ -40,7 +55,22 @@ Expr* NumExpr::subst(std::string s, Expr *e) {
     return this;
 }
 
-// constructor for AddExpr
+void NumExpr::print(std::ostream &stream) {
+    stream << this->val;
+}
+
+void NumExpr::pretty_print(std::ostream &stream) {
+    pretty_print_at(stream, prec_none);
+}
+
+void NumExpr::pretty_print_at(std::ostream &stream, precedence_t ptype) {
+    stream << this->val;
+}
+
+/********************************************
+*  AddExpr method definitions               *
+*********************************************/
+
 AddExpr::AddExpr(Expr *lhs, Expr *rhs) {
     this->lhs = lhs;
     this->rhs = rhs;
@@ -67,7 +97,35 @@ Expr* AddExpr::subst(std::string s, Expr *e) {
     return new AddExpr(lhs->subst(s, e), rhs->subst(s, e));
 }
 
-// constructor for MultExpr
+void AddExpr::print(std::ostream &stream) {
+    stream << "(";
+    this->lhs->print(stream);
+    stream << "+";
+    this->rhs->print(stream);
+    stream << ")";
+}
+
+void AddExpr::pretty_print(std::ostream &stream) {
+    this->lhs->pretty_print_at(stream, prec_add);
+    stream << " + ";
+    this->rhs->pretty_print_at(stream, prec_none);
+}
+
+void AddExpr::pretty_print_at(std::ostream &stream, precedence_t ptype) {
+    if (ptype == prec_add) {
+        stream << "(";
+    }
+    this->lhs->pretty_print_at(stream, prec_add);
+    stream << " + ";
+    this->rhs->pretty_print_at(stream, prec_none);
+    if (ptype == prec_add) {
+        stream << ")";
+    }
+}
+
+/*******************************************
+*  MultExpr method definitions             *
+********************************************/
 MultExpr::MultExpr(Expr *lhs, Expr *rhs) {
     this->lhs = lhs;
     this->rhs = rhs;
@@ -94,7 +152,35 @@ Expr* MultExpr::subst(std::string s, Expr *e) {
     return new MultExpr(lhs->subst(s, e), rhs->subst(s, e));
 }
 
-// constructor for VarExpr
+void MultExpr::print(std::ostream &stream) {
+    stream << "(";
+    this->lhs->print(stream);
+    stream << "*";
+    this->rhs->print(stream);
+    stream << ")";
+}
+
+void MultExpr::pretty_print(std::ostream &stream) {
+    this->lhs->pretty_print_at(stream, prec_mult);
+    stream << " * ";
+    this->rhs->pretty_print_at(stream, prec_none);
+}
+
+void MultExpr::pretty_print_at(std::ostream &stream, precedence_t ptype) {
+    if (ptype == prec_mult) {
+        stream << "(";
+    }
+    this->lhs->pretty_print_at(stream, prec_mult);
+    stream << " * ";
+    this->rhs->pretty_print_at(stream, prec_none);
+    if (ptype == prec_mult) {
+        stream << ")";
+    }
+}
+
+/********************************************
+*  VarExpr Method Definitions               *
+*********************************************/
 VarExpr::VarExpr(std::string val) {
     this->val = val;
 }
@@ -121,4 +207,16 @@ Expr* VarExpr::subst(std::string s, Expr *e) {
         return e;
     }
     return this;
+}
+
+void VarExpr::print(std::ostream &stream) {
+    stream << this->val;
+}
+
+void VarExpr::pretty_print(std::ostream &stream) {
+    pretty_print_at(stream, prec_none);
+}
+
+void VarExpr::pretty_print_at(std::ostream &stream, precedence_t ptype) {
+    stream << this->val;
 }

@@ -15,6 +15,8 @@ declarations for all the sub classes of Expr class
 #define expr_hpp
 
 #include <string>
+#include <ostream>
+#include <sstream>
 
 /**
 * \@brief Expr class
@@ -23,6 +25,12 @@ declarations for all the sub classes of Expr class
 */
 class Expr {
 public:
+    typedef enum { //PEMDAS
+        prec_none, // Num and VarExpr = 0
+        prec_add,  // add = 1
+        prec_mult // mult = 2
+    } precedence_t;
+
     /**
 * \brief determines if one Expr is equal to another Expr
 * \param e to compare the value of
@@ -49,6 +57,17 @@ public:
 * \return Expr
 */
     virtual Expr* subst(std::string s, Expr *e) = 0;
+
+    virtual void print(std::ostream& stream) = 0;
+    //print in a nicer way
+    virtual void pretty_print(std::ostream& stream) = 0;
+    // pretty print based on mode type
+    virtual void pretty_print_at(std::ostream& stream, precedence_t ptype) = 0;
+    //call in print
+    std::string to_string();
+    //call in pretty print
+    std::string to_string_pretty();
+
 };
 
 /**
@@ -60,15 +79,14 @@ class NumExpr : public Expr {
 public:
     int val;  /**< integer value member variable of NumExpr class */
 
-    /**
-* \brief constructor of NumExpr class
-* \param val
-*/
     NumExpr(int val);
     bool equals(Expr *expr);
     int interp();
     bool has_variable();
     Expr* subst(std::string s, Expr *e);
+    void print(std::ostream& stream);
+    void pretty_print(std::ostream& stream);
+    void pretty_print_at(std::ostream& stream, precedence_t ptype);
 };
 
 /**
@@ -81,16 +99,14 @@ public:
     Expr *lhs; /**< left hand side expr of AddExpr*/
     Expr *rhs; /**< right hand side expr of AddExpr*/
 
-    /**
-* Constructor that creates new AddExpr.
-* @param lhs a pointer to an Expr
-* @param rhs a pointer to an Expr
-*/
     AddExpr(Expr *lhs, Expr *rhs);
     bool equals(Expr *expr);
     int interp();
     bool has_variable();
     Expr* subst(std::string s, Expr *e);
+    void print(std::ostream& stream);
+    void pretty_print(std::ostream& stream);
+    void pretty_print_at(std::ostream& stream, precedence_t ptype);
 };
 
 /**
@@ -102,16 +118,15 @@ class MultExpr : public Expr {
 public:
     Expr *lhs; /**< left hand side expr of MultExpr*/
     Expr *rhs; /**< right hand side expr of MultExpr*/
-    /**
-* Constructor that creates new MultExpr.
-* @param lhs a pointer to an Expr
-* @param rhs a pointer to an Expr
-*/
+
     MultExpr(Expr *lhs, Expr *rhs);
     bool equals(Expr *expr);
     int interp();
     bool has_variable();
     Expr* subst(std::string s, Expr *e);
+    void print(std::ostream& stream);
+    void pretty_print(std::ostream& stream);
+    void pretty_print_at(std::ostream& stream, precedence_t ptype);
 };
 
 /**
@@ -122,17 +137,16 @@ public:
 class VarExpr : public Expr {
 public:
     std::string val;/**< String called val, which is a member variable of VarExpr*/
-    /**
-* Constructor that creates new VarExpr.
-* @param val is a string
-*
-*/
+
     VarExpr(std::string val);
 
     bool equals(Expr *expr);
     int interp();
     bool has_variable();
     Expr* subst(std::string s, Expr *e);
+    void print(std::ostream& stream);
+    void pretty_print(std::ostream& stream);
+    void pretty_print_at(std::ostream& stream, precedence_t ptype);
 };
 
 #endif /* expr_hpp */

@@ -21,16 +21,17 @@
 */
 TEST_CASE("Test NumExpr equals") {
     
-    SECTION("AddExpr should be TRUE") {
+    SECTION("NUMExpr should be TRUE") {
         CHECK((new NumExpr(1))->equals(new NumExpr(1)) == true);
         CHECK((new NumExpr(0))->equals(new NumExpr(0)) == true);
         CHECK((new NumExpr(-10))->equals(new NumExpr(-10)) == true);
     }
     
-    SECTION("AddExpr should be FALSE") {
+    SECTION("NUMExpr should be FALSE") {
         CHECK((new NumExpr(15))->equals(new NumExpr(-15)) == false);
         CHECK((new NumExpr(0))->equals(new NumExpr(-1)) == false);
         CHECK((new NumExpr(3))->equals(new NumExpr(4)) == false);
+        CHECK((new NumExpr(3))->equals(NULL) == false);
     }
 }
 
@@ -50,6 +51,7 @@ TEST_CASE("Test AddExpr equals") {
         CHECK((new AddExpr(new NumExpr(-100), new NumExpr(-10)))->equals(new AddExpr(new NumExpr(-10), new NumExpr(-100))) == false);
         CHECK((new AddExpr(new NumExpr(0), new NumExpr(1)))->equals(new AddExpr(new NumExpr(50), new NumExpr(1))) == false);
         CHECK((new AddExpr(new NumExpr(1234), new NumExpr(4321)))->equals(new AddExpr(new NumExpr(-1234), new NumExpr(-4321))) == false);
+        CHECK((new AddExpr(new NumExpr(1234), new NumExpr(4321)))->equals(NULL) == false);
     }
     
 }
@@ -70,6 +72,7 @@ TEST_CASE("Test MultExpr equals") {
         CHECK((new MultExpr(new NumExpr(-100), new NumExpr(-10)))->equals(new MultExpr(new NumExpr(-10), new NumExpr(-100))) == false);
         CHECK((new MultExpr(new NumExpr(0), new NumExpr(0)))->equals(new MultExpr(new NumExpr(0), new NumExpr(1))) == false);
         CHECK((new MultExpr(new NumExpr(98765), new NumExpr(98765)))->equals(new MultExpr(new NumExpr(98765), new NumExpr(-98765))) == false);
+        CHECK((new MultExpr(new NumExpr(98765), new NumExpr(98765)))->equals(NULL) == false);
     }
     
 }
@@ -90,6 +93,7 @@ TEST_CASE("Test VarExpr equals") {
         CHECK((new VarExpr("hi"))->equals(new VarExpr("bye")) == false);
         CHECK((new VarExpr("HELLOworld"))->equals(new VarExpr("worldHELLO")) == false);
         CHECK((new VarExpr("codingisfun"))->equals(new VarExpr("codingisfun!")) == false);
+        CHECK((new VarExpr("codingisfun"))->equals(NULL) == false);
     }
     
 }
@@ -206,5 +210,100 @@ TEST_CASE("Substitution (subst) function") {
         CHECK( (new VarExpr("x"))
                ->subst("x", new AddExpr(new VarExpr("y"), new NumExpr(7)))
                ->equals(new AddExpr(new VarExpr("y"), new NumExpr(7))) );
+        CHECK( (new VarExpr("x"))
+                       ->subst("Y", new AddExpr(new VarExpr("y"), new NumExpr(7)))
+                       ->equals(new VarExpr("x")) );
+    }
+}
+
+TEST_CASE("to string function") {
+
+    SECTION("NUM Expr to string") {
+        CHECK( (new NumExpr(10))->to_string() == "10" );
+        CHECK( (new NumExpr(0))->to_string() == "0" );
+        CHECK( (new NumExpr(-10))->to_string() == "-10" );
+        CHECK( (new NumExpr(12345))->to_string() == "12345" );
+    }
+
+    SECTION("AddExpr to string") {
+        CHECK((new AddExpr(new NumExpr(10), new NumExpr(15)))->to_string() == "(10+15)" );
+        CHECK((new AddExpr(new NumExpr(0), new NumExpr(0)))->to_string() == "(0+0)" );
+        CHECK((new AddExpr(new NumExpr(-10), new NumExpr(15)))->to_string() == "(-10+15)" );
+        CHECK((new AddExpr(new NumExpr(1), new AddExpr(new NumExpr(2), new NumExpr(3))))->to_string() == "(1+(2+3))");
+        CHECK((new AddExpr(new VarExpr("hello"), new VarExpr("world!")))->to_string() == "(hello+world!)");
+    }
+
+    SECTION("MultExpr to string") {
+        CHECK((new MultExpr(new NumExpr(1), new NumExpr(5)))->to_string() == "(1*5)" );
+        CHECK((new MultExpr(new NumExpr(0), new NumExpr(0)))->to_string() == "(0*0)" );
+        CHECK((new MultExpr(new NumExpr(1), new NumExpr(-5)))->to_string() == "(1*-5)" );
+        CHECK((new MultExpr(new NumExpr(-1), new NumExpr(-5)))->to_string() == "(-1*-5)" );
+        CHECK((new MultExpr(new VarExpr("hello"), new VarExpr("world!")))->to_string() == "(hello*world!)");
+
+    }
+
+    SECTION("VARIABLE Expr to string") {
+        CHECK((new VarExpr("x"))->to_string() == "x" );
+        CHECK((new VarExpr("R"))->to_string() == "R" );
+        CHECK((new VarExpr("mSd"))->to_string() == "mSd" );
+        CHECK((new VarExpr("hello"))->to_string() == "hello" );
+    }
+}
+
+TEST_CASE("to string PRETTY function") {
+
+    SECTION("NUM Expr to string pretty") {
+        CHECK( (new NumExpr(10))->to_string_pretty() == "10" );
+        CHECK( (new NumExpr(0))->to_string_pretty() == "0" );
+        CHECK( (new NumExpr(-10))->to_string_pretty() == "-10" );
+        CHECK( (new NumExpr(12345))->to_string_pretty() == "12345" );
+    }
+
+    SECTION("AddExpr to string pretty") {
+        CHECK((new AddExpr(new NumExpr(10), new NumExpr(15)))->to_string_pretty() == "10 + 15");
+        CHECK((new AddExpr(new NumExpr(0), new NumExpr(0)))->to_string_pretty() == "0 + 0");
+        CHECK((new AddExpr(new NumExpr(-10), new NumExpr(15)))->to_string_pretty() == "-10 + 15");
+        CHECK((new AddExpr(new VarExpr("hello"), new VarExpr("world!")))->to_string_pretty() == "hello + world!");
+        CHECK((new AddExpr(new NumExpr(1), new AddExpr(new NumExpr(2), new NumExpr(3))))->to_string_pretty() == "1 + 2 + 3");
+        CHECK((new AddExpr(
+                new AddExpr(
+                        new NumExpr(10),
+                        new AddExpr(
+                                new AddExpr(
+                                        new NumExpr(10),
+                                        new NumExpr(10)),
+                                new NumExpr(10))),
+                new AddExpr(
+                        new NumExpr(10),
+                        new NumExpr(10))))
+                      ->to_string_pretty()  == "(10 + (10 + 10) + 10) + 10 + 10");
+    }
+
+    SECTION("MultExpr to string pretty") {
+        CHECK((new MultExpr(new NumExpr(1), new NumExpr(5)))->to_string_pretty() == "1 * 5");
+        CHECK((new MultExpr(new NumExpr(0), new NumExpr(0)))->to_string_pretty() == "0 * 0");
+        CHECK((new MultExpr(new NumExpr(1), new NumExpr(-5)))->to_string_pretty() == "1 * -5");
+        CHECK((new MultExpr(new NumExpr(-1), new NumExpr(-5)))->to_string_pretty() == "-1 * -5");
+        CHECK((new MultExpr(new VarExpr("hello"), new VarExpr("world!")))->to_string_pretty() == "hello * world!");
+        CHECK((new MultExpr(
+                new MultExpr(
+                    new NumExpr(10),
+                    new MultExpr(
+                        new MultExpr(
+                                new NumExpr(10),
+                                new NumExpr(10)),
+                        new NumExpr(10))),
+                new MultExpr(
+                        new NumExpr(10),
+                        new NumExpr(10))))
+                      ->to_string_pretty()  == "(10 * (10 * 10) * 10) * 10 * 10");
+
+    }
+
+    SECTION("VARIABLE Expr to string pretty") {
+        CHECK((new VarExpr("x"))->to_string_pretty() == "x" );
+        CHECK((new VarExpr("R"))->to_string_pretty() == "R" );
+        CHECK((new VarExpr("mSd"))->to_string_pretty() == "mSd" );
+        CHECK((new VarExpr("hello"))->to_string_pretty() == "hello" );
     }
 }

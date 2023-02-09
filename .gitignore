@@ -3,7 +3,7 @@
 /MSDscript/MSDscript/cmake-build-debug-coverage
 .pdf
 .txt
-=======
+.gitignore
 # Compiled files
 *.class
 *.o

@@ -306,5 +306,6 @@ TEST_CASE("to string PRETTY function") {
         CHECK((new VarExpr("mSd"))->to_string_pretty() == "mSd" );
         CHECK((new VarExpr("hello"))->to_string_pretty() == "hello" );
         CHECK((new VarExpr("hello"))->to_string_pretty() == "hello" );
+        CHECK((new VarExpr("hello"))->to_string_pretty() == "hello" );
     }
 }

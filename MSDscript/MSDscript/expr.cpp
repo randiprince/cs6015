@@ -112,13 +112,13 @@ void AddExpr::pretty_print(std::ostream &stream) {
 }
 
 void AddExpr::pretty_print_at(std::ostream &stream, precedence_t ptype) {
-    if (ptype == prec_add) {
+    if (ptype >= prec_add) {
         stream << "(";
     }
     this->lhs->pretty_print_at(stream, prec_add);
     stream << " + ";
     this->rhs->pretty_print_at(stream, prec_none);
-    if (ptype == prec_add) {
+    if (ptype >= prec_add) {
         stream << ")";
     }
 }
@@ -163,7 +163,7 @@ void MultExpr::print(std::ostream &stream) {
 void MultExpr::pretty_print(std::ostream &stream) {
     this->lhs->pretty_print_at(stream, prec_mult);
     stream << " * ";
-    this->rhs->pretty_print_at(stream, prec_none);
+    this->rhs->pretty_print_at(stream, prec_add);
 }
 
 void MultExpr::pretty_print_at(std::ostream &stream, precedence_t ptype) {
@@ -172,7 +172,7 @@ void MultExpr::pretty_print_at(std::ostream &stream, precedence_t ptype) {
     }
     this->lhs->pretty_print_at(stream, prec_mult);
     stream << " * ";
-    this->rhs->pretty_print_at(stream, prec_none);
+    this->rhs->pretty_print_at(stream, prec_add);
     if (ptype == prec_mult) {
         stream << ")";
     }

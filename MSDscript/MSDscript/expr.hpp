@@ -61,7 +61,7 @@ public:
     virtual void print(std::ostream& stream) = 0;
     //print in a nicer way
     virtual void pretty_print(std::ostream& stream) = 0;
-    // pretty print based on mode type
+    // pretty print based on precedence type
     virtual void pretty_print_at(std::ostream& stream, precedence_t ptype) = 0;
     //call in print
     std::string to_string();

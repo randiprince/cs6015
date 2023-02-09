@@ -297,7 +297,6 @@ TEST_CASE("to string PRETTY function") {
                         new NumExpr(10),
                         new NumExpr(10))))
                       ->to_string_pretty()  == "(10 * (10 * 10) * 10) * 10 * 10");
-
     }
 
     SECTION("VARIABLE Expr to string pretty") {
@@ -305,7 +304,38 @@ TEST_CASE("to string PRETTY function") {
         CHECK((new VarExpr("R"))->to_string_pretty() == "R" );
         CHECK((new VarExpr("mSd"))->to_string_pretty() == "mSd" );
         CHECK((new VarExpr("hello"))->to_string_pretty() == "hello" );
-        CHECK((new VarExpr("hello"))->to_string_pretty() == "hello" );
-        CHECK((new VarExpr("hello"))->to_string_pretty() == "hello" );
+        CHECK((new MultExpr(new MultExpr(new NumExpr(1), new NumExpr(2)), new AddExpr(new NumExpr(3), new NumExpr(4))))->to_string_pretty() == "(1 * 2) * (3 + 4)");
+    }
+
+    SECTION("to string pretty for combo Expr") {
+        CHECK((new MultExpr(new AddExpr(new NumExpr(1), new NumExpr(2)), new NumExpr(3)))->to_string_pretty() == "(1 + 2) * 3");
+        CHECK((new MultExpr(
+                new MultExpr(
+                        new AddExpr(
+                                new NumExpr(9),
+                                new NumExpr(9)),
+                        new AddExpr(
+                                new MultExpr(
+                                        new NumExpr(10),
+                                        new NumExpr(10)),
+                                new NumExpr(10))),
+                new MultExpr(
+                        new NumExpr(10),
+                        new NumExpr(10))))
+                      ->to_string_pretty()  == "((9 + 9) * (10 * 10 + 10)) * 10 * 10");
+        CHECK((new AddExpr(
+                new AddExpr(
+                        new AddExpr(
+                                new NumExpr(9),
+                                new NumExpr(9)),
+                        new AddExpr(
+                                new MultExpr(
+                                        new NumExpr(10),
+                                        new NumExpr(10)),
+                                new NumExpr(10))),
+                new MultExpr(
+                        new NumExpr(10),
+                        new NumExpr(10))))
+                      ->to_string_pretty()  == "((9 + 9) + 10 * 10 + 10) + 10 * 10");
     }
 }

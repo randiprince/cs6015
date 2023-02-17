@@ -60,10 +60,10 @@ void NumExpr::print(std::ostream &stream) {
 }
 
 void NumExpr::pretty_print(std::ostream &stream) {
-    pretty_print_at(stream, prec_none);
+    pretty_print_at(stream, prec_none, 0);
 }
 
-void NumExpr::pretty_print_at(std::ostream &stream, precedence_t ptype) {
+void NumExpr::pretty_print_at(std::ostream &stream, precedence_t ptype, long *pos) {
     stream << this->val;
 }
 
@@ -106,18 +106,19 @@ void AddExpr::print(std::ostream &stream) {
 }
 
 void AddExpr::pretty_print(std::ostream &stream) {
-    this->lhs->pretty_print_at(stream, prec_add);
+    long pos = stream.tellp();
+    this->lhs->pretty_print_at(stream, prec_add, &pos);
     stream << " + ";
-    this->rhs->pretty_print_at(stream, prec_none);
+    this->rhs->pretty_print_at(stream, prec_none, &pos);
 }
 
-void AddExpr::pretty_print_at(std::ostream &stream, precedence_t ptype) {
+void AddExpr::pretty_print_at(std::ostream &stream, precedence_t ptype, long *pos) {
     if (ptype >= prec_add) {
         stream << "(";
     }
-    this->lhs->pretty_print_at(stream, prec_add);
+    this->lhs->pretty_print_at(stream, prec_add, pos);
     stream << " + ";
-    this->rhs->pretty_print_at(stream, prec_none);
+    this->rhs->pretty_print_at(stream, prec_none, pos);
     if (ptype >= prec_add) {
         stream << ")";
     }
@@ -161,18 +162,19 @@ void MultExpr::print(std::ostream &stream) {
 }
 
 void MultExpr::pretty_print(std::ostream &stream) {
-    this->lhs->pretty_print_at(stream, prec_mult);
+    long pos = stream.tellp();
+    this->lhs->pretty_print_at(stream, prec_mult, &pos);
     stream << " * ";
-    this->rhs->pretty_print_at(stream, prec_add);
+    this->rhs->pretty_print_at(stream, prec_add, &pos);
 }
 
-void MultExpr::pretty_print_at(std::ostream &stream, precedence_t ptype) {
+void MultExpr::pretty_print_at(std::ostream &stream, precedence_t ptype, long *pos) {
     if (ptype == prec_mult) {
         stream << "(";
     }
-    this->lhs->pretty_print_at(stream, prec_mult);
+    this->lhs->pretty_print_at(stream, prec_mult, pos);
     stream << " * ";
-    this->rhs->pretty_print_at(stream, prec_add);
+    this->rhs->pretty_print_at(stream, prec_add, pos);
     if (ptype == prec_mult) {
         stream << ")";
     }
@@ -214,9 +216,93 @@ void VarExpr::print(std::ostream &stream) {
 }
 
 void VarExpr::pretty_print(std::ostream &stream) {
-    pretty_print_at(stream, prec_none);
+    pretty_print_at(stream, prec_none, 0);
 }
 
-void VarExpr::pretty_print_at(std::ostream &stream, precedence_t ptype) {
+void VarExpr::pretty_print_at(std::ostream &stream, precedence_t ptype, long *pos) {
     stream << this->val;
+}
+
+LetExpr::LetExpr(std::string lhs, Expr *rhs, Expr *body) {
+    this->lhs = lhs;
+    this->rhs = rhs;
+    this->body = body;
+
+}
+
+bool LetExpr::equals(Expr *e) {
+    LetExpr *other = dynamic_cast<LetExpr*>(e);
+    if (other == NULL){
+        return false;
+    } else {
+        return ((this->lhs == other->lhs) &&
+                (this->rhs->equals(other->rhs)) &&
+                (this->body->equals(other->body)));
+    }
+}
+
+int LetExpr::interp() {
+    Expr* inBody = this->body;
+    // interp rhs before sub
+    int intRHS = this->rhs->interp();
+    // sub body
+    inBody->subst(this->lhs, new NumExpr(intRHS));
+    return inBody->interp();
+}
+ /* should return true only if the right-hand side or body expression contains a variable. */
+bool LetExpr::has_variable() {
+    return (this->rhs->has_variable() || this->body->has_variable());
+}
+
+Expr* LetExpr::subst(std::string s, Expr *replace) {
+    this->rhs->subst(s, replace);
+    Expr* subBody = this->body;
+    if (this->lhs != s) { // if lhs not the same, we sub the body
+        subBody = subBody->subst(s, replace);
+    }
+    return new LetExpr(this->lhs, this->rhs->subst(s, replace), subBody);
+}
+
+void LetExpr::print(std::ostream &stream) {
+    stream << "(_let ";
+    stream << this->lhs;
+    stream << "=";
+    this->rhs->print(stream);
+    stream << " _in " ;
+    this->body->print(stream);
+    stream << ")";
+}
+
+void LetExpr::pretty_print(std::ostream &stream) {
+    stream << "_let ";
+    stream << this->lhs;
+    stream << " = ";
+    long pos = 0;
+    this->rhs->pretty_print_at(stream, prec_none, &pos);
+    stream << "\n";
+    pos = stream.tellp();
+    stream << "_in  ";
+    this->body->pretty_print_at(stream, prec_none, &pos);
+}
+
+void LetExpr::pretty_print_at(std::ostream &stream, precedence_t ptype, long *pos) {
+    if (ptype >= prec_let) {
+        stream << "(";
+    }
+    long currentPos = stream.tellp();
+    long spaces = currentPos - *pos;
+    stream << "_let " << this->lhs << " = ";
+    this->rhs->pretty_print_at(stream, prec_none, pos);
+    stream << "\n";
+    *pos = stream.tellp();
+    int space_count = 0;
+    while (space_count < spaces){
+        stream << " ";
+        space_count++;
+    }
+    stream << "_in  ";
+    this->body->pretty_print_at(stream, prec_none, pos);
+    if (ptype >= prec_let) {
+        stream << ")";
+    }
 }

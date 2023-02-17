@@ -27,8 +27,9 @@ class Expr {
 public:
     typedef enum { //PEMDAS
         prec_none, // Num and VarExpr = 0
-        prec_add,  // add = 1
-        prec_mult // mult = 2
+        prec_let, // = 1
+        prec_add,  // add = 2
+        prec_mult // mult = 3
     } precedence_t;
 
     /**
@@ -62,7 +63,7 @@ public:
     //print in a nicer way
     virtual void pretty_print(std::ostream& stream) = 0;
     // pretty print based on precedence type
-    virtual void pretty_print_at(std::ostream& stream, precedence_t ptype) = 0;
+    virtual void pretty_print_at(std::ostream& stream, precedence_t ptype, long *pos) = 0;
     //call in print
     std::string to_string();
     //call in pretty print
@@ -86,7 +87,7 @@ public:
     Expr* subst(std::string s, Expr *e);
     void print(std::ostream& stream);
     void pretty_print(std::ostream& stream);
-    void pretty_print_at(std::ostream& stream, precedence_t ptype);
+    void pretty_print_at(std::ostream& stream, precedence_t ptype, long *pos);
 };
 
 /**
@@ -106,7 +107,7 @@ public:
     Expr* subst(std::string s, Expr *e);
     void print(std::ostream& stream);
     void pretty_print(std::ostream& stream);
-    void pretty_print_at(std::ostream& stream, precedence_t ptype);
+    void pretty_print_at(std::ostream& stream, precedence_t ptype, long *pos);
 };
 
 /**
@@ -126,7 +127,7 @@ public:
     Expr* subst(std::string s, Expr *e);
     void print(std::ostream& stream);
     void pretty_print(std::ostream& stream);
-    void pretty_print_at(std::ostream& stream, precedence_t ptype);
+    void pretty_print_at(std::ostream& stream, precedence_t ptype, long *pos);
 };
 
 /**
@@ -146,7 +147,29 @@ public:
     Expr* subst(std::string s, Expr *e);
     void print(std::ostream& stream);
     void pretty_print(std::ostream& stream);
-    void pretty_print_at(std::ostream& stream, precedence_t ptype);
+    void pretty_print_at(std::ostream& stream, precedence_t ptype, long *pos);
+};
+
+/**
+* \@brief LetExpr class
+* This is a sub class that implements Expr. It is an expr that is a string.
+* It implements all virtual methods of expr.
+*/
+class LetExpr : public Expr {
+public:
+    std::string lhs;
+    Expr* rhs;
+    Expr* body;
+
+    LetExpr(std::string lhs, Expr *rhs, Expr *body);
+
+    bool equals(Expr *expr);
+    int interp();
+    bool has_variable();
+    Expr* subst(std::string s, Expr *e);
+    void print(std::ostream& stream);
+    void pretty_print(std::ostream& stream);
+    void pretty_print_at(std::ostream& stream, precedence_t ptype, long *pos);
 };
 
 #endif /* expr_hpp */

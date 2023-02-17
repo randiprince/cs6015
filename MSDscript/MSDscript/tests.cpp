@@ -99,6 +99,30 @@ TEST_CASE("Test VarExpr equals") {
 }
 
 /**
+* \@brief Test LetExpr equals
+* Tests of LetExpr equals function
+*/
+TEST_CASE("Test LetExpr equals") {
+
+    SECTION("LetExpr should be TRUE") {
+        CHECK((new LetExpr("R", new NumExpr(5), new AddExpr(new VarExpr("R"), new NumExpr(3))))
+                    -> equals(new LetExpr("R", new NumExpr(5), new AddExpr(new VarExpr("R"), new NumExpr(3)))) == true);
+        CHECK((new LetExpr("R", new NumExpr(5), new MultExpr(new VarExpr("R"), new NumExpr(3))))
+                      -> equals(new LetExpr("R", new NumExpr(5), new MultExpr(new VarExpr("R"), new NumExpr(3)))) == true);
+    }
+
+    SECTION("LetExpr should be FALSE") {
+        CHECK((new LetExpr("R", new NumExpr(5), new AddExpr(new VarExpr("R"), new NumExpr(3))))
+                      -> equals(new LetExpr("R", new NumExpr(5), new AddExpr(new VarExpr("r"), new NumExpr(3)))) == false);
+        CHECK((new LetExpr("R", new NumExpr(5), new MultExpr(new VarExpr("R"), new NumExpr(3))))
+                      -> equals(new LetExpr("R", new NumExpr(5), new MultExpr(new VarExpr("r"), new NumExpr(3)))) == false);
+        CHECK((new LetExpr("R", new NumExpr(5), new MultExpr(new VarExpr("R"), new NumExpr(3))))
+                      -> equals(NULL) == false);
+    }
+
+}
+
+/**
 * \@brief Test Interp function
 * Tests of interp function for each class
 */
@@ -129,6 +153,13 @@ TEST_CASE("Interp Function") {
         CHECK_THROWS_WITH((new VarExpr(" "))->interp(), "VarExpr has no value!");
         CHECK_THROWS_WITH((new AddExpr(new VarExpr("m"), new NumExpr(21)))->interp(), "VarExpr has no value!");
         CHECK_THROWS_WITH((new MultExpr(new VarExpr("s"), new NumExpr(23)))->interp(), "VarExpr has no value!");
+    }
+
+    SECTION("LetExpr Interp") {
+        CHECK_THROWS_WITH((new LetExpr("R", new NumExpr(5), new AddExpr(new VarExpr("R"), new NumExpr(3))))
+                      -> interp(), "VarExpr has no value!");
+        CHECK_THROWS_WITH((new LetExpr("R", new NumExpr(5), new MultExpr(new VarExpr("R"), new NumExpr(3))))
+                      -> interp(), "VarExpr has no value!");
     }
 }
 
@@ -167,6 +198,15 @@ TEST_CASE("Has VarExpr Function") {
         CHECK((new AddExpr(new VarExpr("m"), new NumExpr(21)))->has_variable() == true);
         CHECK((new MultExpr(new VarExpr("s"), new NumExpr(23)))->has_variable() == true);
     }
+
+    SECTION("LetExpr has variable") {
+        CHECK((new LetExpr("R", new NumExpr(5), new AddExpr(new VarExpr("R"), new NumExpr(3))))
+                      -> has_variable() == true);
+        CHECK((new LetExpr("R", new NumExpr(5), new MultExpr(new VarExpr("R"), new NumExpr(3))))
+                      -> has_variable() == true);
+        CHECK((new LetExpr("R", new NumExpr(5), new MultExpr(new VarExpr("R"), new NumExpr(3))))
+                      -> has_variable() == true);
+    }
 }
 
 /**
@@ -184,14 +224,14 @@ TEST_CASE("Substitution (subst) function") {
         CHECK((new NumExpr(1))->subst("0", new NumExpr(0))->equals(new NumExpr(0)) == false);
     }
     
-    SECTION("ADD Expr subst") { //fix
+    SECTION("ADD Expr subst") {
         CHECK((new AddExpr(new VarExpr("R"), new NumExpr(1)))->subst("R", new VarExpr("P"))->equals(new AddExpr(new VarExpr("P"), new NumExpr(1))) == true);
         CHECK((new AddExpr(new VarExpr("M"), new NumExpr(0)))->subst("M", new VarExpr("S"))->equals(new AddExpr(new VarExpr("S"), new NumExpr(0))) == true);
         CHECK((new AddExpr(new VarExpr("R"), new NumExpr(1)))->subst("R", new VarExpr("P"))->equals(new AddExpr(new VarExpr("R"), new NumExpr(1))) == false);
         CHECK((new AddExpr(new VarExpr("h"), new NumExpr(-8764)))->subst("h", new VarExpr("u"))->equals(new AddExpr(new VarExpr("u"), new NumExpr(1))) == false);
     }
     
-    SECTION("MULT Expr subst") { // fix
+    SECTION("MULT Expr subst") {
         CHECK((new MultExpr(new VarExpr("d"), new NumExpr(42)))->subst("d", new VarExpr("q"))->equals(new MultExpr(new VarExpr("q"), new NumExpr(42))) == true);
         CHECK((new MultExpr(new VarExpr("d"), new NumExpr(42)))->subst("d", new VarExpr("q"))->equals(new MultExpr(new VarExpr("q"), new NumExpr(42))) == true);
         CHECK((new MultExpr(new VarExpr("i"), new NumExpr(0)))->subst("i", new VarExpr("y"))->equals(new MultExpr(new VarExpr("y"), new NumExpr(0))) == true);
@@ -213,6 +253,14 @@ TEST_CASE("Substitution (subst) function") {
         CHECK( (new VarExpr("x"))
                        ->subst("Y", new AddExpr(new VarExpr("y"), new NumExpr(7)))
                        ->equals(new VarExpr("x")) );
+    }
+
+    SECTION("LetExpr subst") {
+        Expr *LetTest1 = new LetExpr("R", new NumExpr(5), new AddExpr(new VarExpr("R"), new NumExpr(3)));
+        CHECK((LetTest1)->subst("R", new AddExpr(new VarExpr("M"), new NumExpr(3)))->equals(LetTest1));
+        Expr *LetTest2 = new LetExpr("R",new VarExpr("R"), new AddExpr(new VarExpr("R"), new NumExpr(2)));
+        CHECK((LetTest2->subst("R", new NumExpr(5))
+                ->equals(new LetExpr("R",new NumExpr(5),new AddExpr(new VarExpr("R"), new NumExpr(2))))));
     }
 }
 
@@ -247,6 +295,31 @@ TEST_CASE("to string function") {
         CHECK((new VarExpr("R"))->to_string() == "R" );
         CHECK((new VarExpr("mSd"))->to_string() == "mSd" );
         CHECK((new VarExpr("hello"))->to_string() == "hello" );
+    }
+
+    SECTION("LetExpr to string") {
+        CHECK((new LetExpr(
+                "x",
+                new NumExpr(21),
+                new AddExpr(
+                        new LetExpr(
+                                "y",
+                                new NumExpr(0),
+                                new AddExpr(
+                                        new VarExpr("y"),
+                                        new NumExpr(33))),
+                        new VarExpr("x"))))->to_string() == "(_let x=21 _in ((_let y=0 _in (y+33))+x))");
+        CHECK((new LetExpr(
+                "x",
+                new NumExpr(5),
+                new MultExpr(
+                        new LetExpr(
+                                "y",
+                                new NumExpr(3),
+                                new MultExpr(
+                                        new VarExpr("y"),
+                                        new NumExpr(2))),
+                        new VarExpr("x"))))->to_string() == "(_let x=5 _in ((_let y=3 _in (y*2))*x))");
     }
 }
 
@@ -307,7 +380,7 @@ TEST_CASE("to string PRETTY function") {
         CHECK((new MultExpr(new MultExpr(new NumExpr(1), new NumExpr(2)), new AddExpr(new NumExpr(3), new NumExpr(4))))->to_string_pretty() == "(1 * 2) * (3 + 4)");
     }
 
-    SECTION("to string pretty for combo Expr") {
+    SECTION("to string pretty for combo Expr including LetExpr") {
         CHECK((new MultExpr(new AddExpr(new NumExpr(1), new NumExpr(2)), new NumExpr(3)))->to_string_pretty() == "(1 + 2) * 3");
         CHECK((new MultExpr(
                 new MultExpr(
@@ -337,5 +410,67 @@ TEST_CASE("to string PRETTY function") {
                         new NumExpr(10),
                         new NumExpr(10))))
                       ->to_string_pretty()  == "((9 + 9) + 10 * 10 + 10) + 10 * 10");
+        CHECK((new LetExpr(
+                "x",
+                new NumExpr(5),
+                new AddExpr(
+                        new LetExpr(
+                                "y",
+                                new NumExpr(3),
+                                new AddExpr(
+                                        new VarExpr("y"),
+                                        new NumExpr(2))),
+                        new VarExpr("x"))))->to_string() == "(_let x=5 _in ((_let y=3 _in (y+2))+x))");
+        CHECK((new MultExpr(
+                new MultExpr(
+                        new NumExpr (2),
+                        new LetExpr(
+                                "x",
+                                new NumExpr(5),
+                                new AddExpr(
+                                        new VarExpr("x"),
+                                        new NumExpr(1)))),
+                new NumExpr(3)))
+                ->to_string_pretty() == "(2 * (_let x = 5\n"
+                                        "      _in  x + 1)) * 3");
+        CHECK((new LetExpr(
+                "x",
+                new NumExpr(5),
+                new AddExpr(
+                        new LetExpr(
+                                "y",
+                                new NumExpr(3),
+                                new AddExpr(
+                                        new VarExpr("y"),
+                                        new NumExpr(2))),
+                        new VarExpr("x"))))->to_string_pretty()
+                        == "_let x = 5\n"
+                           "_in  (_let y = 3\n"
+                           "      _in  y + 2) + x");
+        CHECK((new LetExpr(
+                "x",
+                new NumExpr(5),
+                new AddExpr(
+                        new LetExpr(
+                                "y",
+                                new NumExpr(3),
+                                new AddExpr(
+                                        new VarExpr("y"),
+                                        new NumExpr(2))),
+                        new VarExpr("x"))))->to_string_pretty()
+                        == "_let x = 5\n"
+                           "_in  (_let y = 3\n"
+                           "      _in  y + 2) + x");
+
+
+        CHECK((new LetExpr(
+                "x",
+                new NumExpr(5),
+                new AddExpr(
+                        new VarExpr("x"),
+                        new NumExpr(1))))->to_string_pretty()
+                        == "_let x = 5\n"
+                           "_in  x + 1");
+
     }
 }

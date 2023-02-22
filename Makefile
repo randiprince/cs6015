@@ -5,8 +5,8 @@
 #*.o targets compile .cpp and .h files into an o file
 #clean removes all files and executables
 
-CXXSOURCE = MSDscript/MSDscript/main.o MSDscript/MSDscript/commandLine.o MSDscript/MSDscript/expr.o
-HEADERS = MSDscript/MSDscript/commandLine.hpp MSDscript/MSDscript/expr.hpp
+CXXSOURCE = MSDscript/MSDscript/main.o MSDscript/MSDscript/commandLine.o MSDscript/MSDscript/expr.o MSDscript/MSDscript/parse.o
+HEADERS = MSDscript/MSDscript/commandLine.hpp MSDscript/MSDscript/expr.hpp MSDscript/MSDscript/parse.hpp
 CXXFLAGS = --std=c++14
 COMPILER = c++
 COMPILEOPTS = -c
@@ -33,6 +33,9 @@ commandLine.o: MSDscript/MSDscript/commandLine.cpp $(HEADERS)
 
 expr.o: MSDscript/MSDscript/expr.cpp $(HEADERS)
 	$(COMPILER) $(CXXFLAGS) $(COMPILEOPTS) expr.cpp
+	
+parse.o: MSDscript/MSDscript/parse.cpp $(HEADERS)
+	$(COMPILER) $(CXXFLAGS) $(COMPILEOPTS) parse.cpp
 
 clean:
 	rm -rf MSDscript/MSDscript/*.o MSDscript/MSDscript/MSDscript

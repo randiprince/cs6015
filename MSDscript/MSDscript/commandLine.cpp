@@ -7,6 +7,7 @@
 #define CATCH_CONFIG_RUNNER
 #include "commandLine.hpp"
 #include "catch.h"
+#include "parse.hpp"
 #include <iostream>
 #include <cstdlib>
 
@@ -28,6 +29,8 @@ void use_arguments(int argc, char * argv[]) {
             std::cout << "The following arguments are allowed: " << std::endl;
             std::cout << "--help" << std::endl;
             std::cout << "--test" << std::endl;
+            std::cout << "--interp" << std::endl;
+            std::cout << "--pretty-print" << std::endl;
             std::cout << "or no arguments at all!" << std::endl;
             exit(0);
         } else if (argument == "--test") {
@@ -41,6 +44,14 @@ void use_arguments(int argc, char * argv[]) {
                 std::cerr << "Test already seen..." << std::endl;
                 exit(1);
             }
+        } else if (argument == "--interp") {
+            Expr* input = parse_expr(std::cin);
+            std::cout << input->interp();
+            exit(0);
+        } else if (argument == "--pretty-print") {
+            Expr* input = parse_expr(std::cin);
+            std::cout << input->to_string_pretty();
+            exit(0);
         } else {
             std::cerr << "Command not found" << std::endl;
             exit(1);

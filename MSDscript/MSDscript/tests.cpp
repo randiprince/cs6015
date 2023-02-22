@@ -7,6 +7,7 @@
 
 #include "catch.h"
 #include "expr.hpp"
+#include "parse.hpp"
 
 /**
 * \file tests.cpp
@@ -473,4 +474,32 @@ TEST_CASE("to string PRETTY function") {
                            "_in  x + 1");
 
     }
+}
+
+TEST_CASE("parse") {
+    CHECK_THROWS_WITH( parse_str("()"), "invalid input" );
+
+    CHECK( parse_str("(1)")->equals(new NumExpr(1)) );
+    CHECK( parse_str("(((1)))")->equals(new NumExpr(1)) );
+
+    CHECK_THROWS_WITH( parse_str("(1"), "missing close parenthesis" );
+
+    CHECK( parse_str("1")->equals(new NumExpr(1)) );
+    CHECK( parse_str("10")->equals(new NumExpr(10)) );
+    CHECK( parse_str("-3")->equals(new NumExpr(-3)) );
+    CHECK( parse_str("  \n 5  ")->equals(new NumExpr(5)) );
+
+    CHECK( parse_str("x")->equals(new VarExpr("x")) == true);
+    CHECK( parse_str("xyz")->equals(new VarExpr("xyz")) == true);
+    CHECK( parse_str("xYz")->equals(new VarExpr("xYz")) == true);
+
+    CHECK( parse_str("x + y")->equals(new AddExpr(new VarExpr("x"), new VarExpr("y"))) );
+    CHECK( parse_str("x * y")->equals(new MultExpr(new VarExpr("x"), new VarExpr("y"))) );
+    CHECK( parse_str("z * x + y")
+                   ->equals(new AddExpr(new MultExpr(new VarExpr("z"), new VarExpr("x")),
+                                    new VarExpr("y"))) );
+
+    CHECK( parse_str("z * (x + y)")
+                   ->equals(new MultExpr(new VarExpr("z"),
+                                     new AddExpr(new VarExpr("x"), new VarExpr("y"))) ));
 }

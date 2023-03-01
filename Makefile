@@ -6,7 +6,9 @@
 #clean removes all files and executables
 
 CXXSOURCE = MSDscript/MSDscript/main.o MSDscript/MSDscript/commandLine.o MSDscript/MSDscript/expr.o MSDscript/MSDscript/parse.o
+CXXSOURCE2 = test_msdscript/test_msdscript/main.o test_msdscript/test_msdscript/exec.o
 HEADERS = MSDscript/MSDscript/commandLine.hpp MSDscript/MSDscript/expr.hpp MSDscript/MSDscript/parse.hpp
+HEADERS2 = test_msdscript/test_msdscript/exec.h
 CXXFLAGS = --std=c++14
 COMPILER = c++
 COMPILEOPTS = -c
@@ -16,6 +18,8 @@ objects := $(wildcard *.o)
 MSDscript: $(CXXSOURCE)
 	$(COMPILER) $(CXXFLAGS) $(LINKINGOPTS) MSDscript/MSDscript/MSDscript $(CXXSOURCE)
 
+test_msdscript: $(CXXSOURCE2)
+	$(COMPILER) $(CXXFLAGS) $(LINKINGOPTS) test_msdscript/test_msdscript/test_msdscript $(CXXSOURCE2)
 	
 .PHONY: clean test showdoc
 
@@ -27,6 +31,9 @@ test: MSDscript
 	
 main.o: MSDscript/MSDscript/main.cpp $(HEADERS)
 	$(COMPILER) $(CXXFLAGS) $(COMPILEOPTS) main.cpp
+
+main.o: test_msdscript/test_msdscript/main.cpp $(HEADERS2)
+	$(COMPILER) $(CXXFLAGS) $(COMPILEOPTS) main.cpp
 	
 commandLine.o: MSDscript/MSDscript/commandLine.cpp $(HEADERS)
 	$(COMPILER) $(CXXFLAGS) $(COMPILEOPTS) commandLine.cpp
@@ -36,6 +43,9 @@ expr.o: MSDscript/MSDscript/expr.cpp $(HEADERS)
 	
 parse.o: MSDscript/MSDscript/parse.cpp $(HEADERS)
 	$(COMPILER) $(CXXFLAGS) $(COMPILEOPTS) parse.cpp
+
+exec.o: test_msdscript/test_msdscript/exec.cpp $(HEADERS2)
+	$(COMPILER) $(CXXFLAGS) $(COMPILEOPTS) exec.cpp
 
 clean:
 	rm -rf MSDscript/MSDscript/*.o MSDscript/MSDscript/MSDscript

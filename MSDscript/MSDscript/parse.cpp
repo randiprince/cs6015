@@ -149,7 +149,7 @@ Expr* parse_let(std::istream &in) {
 }
 
 void parse_keyword(std::istream &in, std::string keyword) {
-    for (int i = 0; i < keyword.size(); i++){
+    for (int i = 0; i < keyword.size(); i++) {
         in.get();
     }
 }

@@ -16,6 +16,12 @@
 * \date 02-02-2023
 */
 int main(int argc, char * argv[]) {
-    use_arguments(argc, argv);
-    return 0;
+    try {
+        use_arguments(argc, argv);
+        return 0;
+    } catch (std::runtime_error e) {
+        std::cerr << e.what() << std::endl;
+        return 1;
+    }
+
 }

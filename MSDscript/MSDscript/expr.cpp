@@ -7,6 +7,8 @@
 
 #include "expr.hpp"
 #include <stdexcept>
+#include "tests.cpp"
+#include "val.hpp"
 
 /**
 * \file expr.cpp
@@ -43,8 +45,8 @@ bool NumExpr::equals(Expr *e) {
     }
 }
 
-int NumExpr::interp() {
-    return this->val;
+Val* NumExpr::interp() {
+    return new NumVal(this->val);
 }
 
 bool NumExpr::has_variable() {
@@ -85,8 +87,8 @@ bool AddExpr::equals(Expr *e) {
     }
 }
 
-int AddExpr::interp() {
-    return (this->lhs->interp() + this->rhs->interp());
+Val* AddExpr::interp() {
+    return (this->lhs->interp()->add_to(this->rhs->interp()));
 }
 
 bool AddExpr::has_variable() {
@@ -141,8 +143,8 @@ bool MultExpr::equals(Expr *e) {
     }
 }
 
-int MultExpr::interp() {
-    return (this->lhs->interp() * this->rhs->interp());
+Val* MultExpr::interp() {
+    return (this->lhs->interp()->mult_with(this->rhs->interp()));
 }
 
 bool MultExpr::has_variable() {
@@ -196,7 +198,7 @@ bool VarExpr::equals(Expr *e) {
     }
 }
 
-int VarExpr::interp() {
+Val* VarExpr::interp() {
     throw std::runtime_error("VarExpr has no value!");
 }
 
@@ -241,13 +243,12 @@ bool LetExpr::equals(Expr *e) {
     }
 }
 
-int LetExpr::interp() {
+Val* LetExpr::interp() {
+    std::string LHS = this->lhs;
+    Expr* RHS = this->rhs;
     Expr* inBody = this->body;
-    // interp rhs before sub
-    int intRHS = this->rhs->interp();
-    // sub body
-    inBody->subst(this->lhs, new NumExpr(intRHS));
-    return inBody->interp();
+    Val* newRHS = RHS->interp();
+    return inBody->subst(LHS, newRHS->to_expr())->interp();
 }
  /* should return true only if the right-hand side or body expression contains a variable. */
 bool LetExpr::has_variable() {

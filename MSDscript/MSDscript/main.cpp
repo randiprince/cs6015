@@ -8,7 +8,7 @@
 
 #include <iostream>
 #include "commandLine.hpp"
-#include "tests.cpp"
+//#include "tests.cpp"
 
 /**
 * \mainpage MSDScript

@@ -5,15 +5,18 @@
 #*.o targets compile .cpp and .h files into an o file
 #clean removes all files and executables
 
-CXXSOURCE = MSDscript/MSDscript/main.o MSDscript/MSDscript/commandLine.o MSDscript/MSDscript/expr.o MSDscript/MSDscript/parse.o
+CXXSOURCE = MSDscript/MSDscript/main.o MSDscript/MSDscript/commandLine.o MSDscript/MSDscript/expr.o MSDscript/MSDscript/parse.o MSDscript/MSDscript/val.o
 CXXSOURCE2 = test_msdscript/test_msdscript/main.o test_msdscript/test_msdscript/exec.o
-HEADERS = MSDscript/MSDscript/commandLine.hpp MSDscript/MSDscript/expr.hpp MSDscript/MSDscript/parse.hpp
+HEADERS = MSDscript/MSDscript/commandLine.hpp MSDscript/MSDscript/expr.hpp MSDscript/MSDscript/parse.hpp MSDscript/MSDscript/val.hpp
 HEADERS2 = test_msdscript/test_msdscript/exec.h
 CXXFLAGS = --std=c++14
 COMPILER = c++
 COMPILEOPTS = -c
 LINKINGOPTS = -o
 objects := $(wildcard *.o)
+
+msdcopy: msdcopy/MSDscript/main.cpp
+	$(COMPILER) $(CXXFLAGS) msdcopy/MSDscript/main.cpp -L./Libraries -lTest -o msdcopy/MSDscript/msdcopy
 
 MSDscript: $(CXXSOURCE)
 	$(COMPILER) $(CXXFLAGS) $(LINKINGOPTS) MSDscript/MSDscript/MSDscript $(CXXSOURCE)
@@ -46,6 +49,9 @@ parse.o: MSDscript/MSDscript/parse.cpp $(HEADERS)
 
 exec.o: test_msdscript/test_msdscript/exec.cpp $(HEADERS2)
 	$(COMPILER) $(CXXFLAGS) $(COMPILEOPTS) exec.cpp
+
+val.o: test_msdscript/test_msdscript/val.cpp $(HEADERS2)
+	$(COMPILER) $(CXXFLAGS) $(COMPILEOPTS) val.cpp
 
 clean:
 	rm -rf MSDscript/MSDscript/*.o MSDscript/MSDscript/MSDscript

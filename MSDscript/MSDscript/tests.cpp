@@ -8,6 +8,7 @@
 #include "catch.h"
 #include "expr.hpp"
 #include "parse.hpp"
+#include "val.hpp"
 
 /**
 * \file tests.cpp
@@ -130,21 +131,21 @@ TEST_CASE("Test LetExpr equals") {
 TEST_CASE("Interp Function") {
     
     SECTION("NUM Expr Interp") {
-        CHECK((new NumExpr(1))->interp() == 1);
-        CHECK((new NumExpr(0))->interp() == 0);
-        CHECK((new NumExpr(-432))->interp() == -432);
+        CHECK((new NumExpr(1))->interp()->equals(new NumVal(1)));
+        CHECK((new NumExpr(0))->interp()->equals(new NumVal(0)));
+        CHECK((new NumExpr(-432))->interp()->equals(new NumVal(-432)));
     }
     
     SECTION("ADD Expr Interp") {
-        CHECK((new AddExpr(new NumExpr(1), new NumExpr(2)))->interp() == 3);
-        CHECK((new AddExpr(new NumExpr(-10), new NumExpr(2)))->interp() == -8);
-        CHECK((new AddExpr(new NumExpr(0), new NumExpr(0)))->interp() == 0);
+        CHECK((new AddExpr(new NumExpr(1), new NumExpr(2)))->interp()->equals(new NumVal(3)));
+        CHECK((new AddExpr(new NumExpr(-10), new NumExpr(2)))->interp()->equals(new NumVal(-8)));
+        CHECK((new AddExpr(new NumExpr(0), new NumExpr(0)))->interp()->equals(new NumVal(0)));
     }
     
     SECTION("MULT Expr Interp") {
-        CHECK((new MultExpr(new NumExpr(1), new NumExpr(2)))->interp() == 2);
-        CHECK((new MultExpr(new NumExpr(0), new NumExpr(0)))->interp() == 0);
-        CHECK((new MultExpr(new NumExpr(-50), new NumExpr(4)))->interp() == -200);
+        CHECK((new MultExpr(new NumExpr(1), new NumExpr(2)))->interp()->equals(new NumVal(2)));
+        CHECK((new MultExpr(new NumExpr(0), new NumExpr(0)))->interp()->equals(new NumVal(0)));
+        CHECK((new MultExpr(new NumExpr(-50), new NumExpr(4)))->interp()->equals(new NumVal(-200)));
     }
     
     SECTION("VARIABLE Expr Interp") {
@@ -157,10 +158,11 @@ TEST_CASE("Interp Function") {
     }
 
     SECTION("LetExpr Interp") {
-        CHECK_THROWS_WITH((new LetExpr("R", new NumExpr(5), new AddExpr(new VarExpr("R"), new NumExpr(3))))
-                      -> interp(), "VarExpr has no value!");
-        CHECK_THROWS_WITH((new LetExpr("R", new NumExpr(5), new MultExpr(new VarExpr("R"), new NumExpr(3))))
-                      -> interp(), "VarExpr has no value!");
+//        CHECK_THROWS_WITH((new LetExpr("R", new NumExpr(5), new AddExpr(new VarExpr("R"), new NumExpr(3))))
+//                      -> interp(), "VarExpr has no value!");
+//        CHECK_THROWS_WITH((new LetExpr("R", new NumExpr(5), new MultExpr(new VarExpr("R"), new NumExpr(3))))
+//                      -> interp(), "VarExpr has no value!");
+        CHECK((new LetExpr("x", new AddExpr( new NumExpr(5), new NumExpr (2)), new AddExpr(new VarExpr("x"), new NumExpr(1))))->interp()->equals(new NumVal(8)));
     }
 }
 

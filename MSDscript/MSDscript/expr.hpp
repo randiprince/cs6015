@@ -17,7 +17,7 @@ declarations for all the sub classes of Expr class
 #include <string>
 #include <ostream>
 #include <sstream>
-
+class Val;
 /**
 * \@brief Expr class
 * This is a parent class called Expr.
@@ -43,7 +43,7 @@ public:
 * \brief returns an int for the value of an expression.
 * \return int
 */
-    virtual int interp() = 0;
+    virtual Val* interp() = 0;
     /**
 * \brief function to determine if the expr has a varExpr
 * \return boolean
@@ -82,7 +82,7 @@ public:
 
     NumExpr(int val);
     bool equals(Expr *expr);
-    int interp();
+    Val* interp();
     bool has_variable();
     Expr* subst(std::string s, Expr *e);
     void print(std::ostream& stream);
@@ -102,7 +102,7 @@ public:
 
     AddExpr(Expr *lhs, Expr *rhs);
     bool equals(Expr *expr);
-    int interp();
+    Val* interp();
     bool has_variable();
     Expr* subst(std::string s, Expr *e);
     void print(std::ostream& stream);
@@ -122,7 +122,7 @@ public:
 
     MultExpr(Expr *lhs, Expr *rhs);
     bool equals(Expr *expr);
-    int interp();
+    Val* interp();
     bool has_variable();
     Expr* subst(std::string s, Expr *e);
     void print(std::ostream& stream);
@@ -142,7 +142,7 @@ public:
     VarExpr(std::string val);
 
     bool equals(Expr *expr);
-    int interp();
+    Val* interp();
     bool has_variable();
     Expr* subst(std::string s, Expr *e);
     void print(std::ostream& stream);
@@ -164,7 +164,7 @@ public:
     LetExpr(std::string lhs, Expr *rhs, Expr *body);
 
     bool equals(Expr *expr);
-    int interp();
+    Val* interp();
     bool has_variable();
     Expr* subst(std::string s, Expr *e);
     void print(std::ostream& stream);

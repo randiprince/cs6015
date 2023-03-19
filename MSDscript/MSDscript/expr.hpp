@@ -27,6 +27,7 @@ class Expr {
 public:
     typedef enum { //PEMDAS
         prec_none, // Num and VarExpr = 0
+        prec_eq,
         prec_let, // = 1
         prec_add,  // add = 2
         prec_mult // mult = 3
@@ -172,4 +173,51 @@ public:
     void pretty_print_at(std::ostream& stream, precedence_t ptype, long *pos);
 };
 
+class BoolExpr : public Expr {
+public:
+    bool val;/**< bool called val, which is a member variable of BoolExpr*/
+
+    BoolExpr(bool val);
+
+    bool equals(Expr *expr);
+    Val* interp();
+    bool has_variable();
+    Expr* subst(std::string s, Expr *e);
+    void print(std::ostream& stream);
+    void pretty_print(std::ostream& stream);
+    void pretty_print_at(std::ostream& stream, precedence_t ptype, long *pos);
+};
+
+class IfExpr : public Expr {
+public:
+    Expr* ifCondition;
+    Expr* thenCondition;
+    Expr* elseConditon;
+
+    IfExpr(Expr *ifCondition, Expr *thenCondition, Expr *elseCondition);
+
+    bool equals(Expr *expr);
+    Val* interp();
+    bool has_variable();
+    Expr* subst(std::string s, Expr *e);
+    void print(std::ostream& stream);
+    void pretty_print(std::ostream& stream);
+    void pretty_print_at(std::ostream& stream, precedence_t ptype, long *pos);
+};
+
+class EqExpr : public Expr {
+public:
+    Expr *lhs;
+    Expr *rhs;
+
+    EqExpr(Expr *lhs, Expr *rhs);
+
+    bool equals(Expr *expr);
+    Val* interp();
+    bool has_variable();
+    Expr* subst(std::string s, Expr *e);
+    void print(std::ostream& stream);
+    void pretty_print(std::ostream& stream);
+    void pretty_print_at(std::ostream& stream, precedence_t ptype, long *pos);
+};
 #endif /* expr_hpp */

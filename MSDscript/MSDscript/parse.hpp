@@ -17,7 +17,9 @@ Expr *parse_addend(std::istream &in);
 Expr *parse_multicand(std::istream &in);
 Expr *parse_var(std::istream &in);
 Expr *parse_let(std::istream &in);
-void parse_keyword(std::istream &in, std::string keyword);
+std::string parse_keyword(std::istream &in);
+Expr *parse_comparg(std::istream &in);
+Expr *parse_if(std::istream &in);
 
 
 #endif //MSDSCRIPT_PARSE_HPP

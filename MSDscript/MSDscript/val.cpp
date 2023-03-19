@@ -41,3 +41,40 @@ Val* NumVal::mult_with(Val *other) {
 void NumVal::print(std::ostream &stream) {
     stream << this->val;
 }
+
+bool NumVal::is_true() {
+    throw std::runtime_error("num val is not a boolean");
+}
+
+BoolVal::BoolVal(bool val) {
+    this->val = val;
+}
+
+bool BoolVal::equals(Val *e) {
+    BoolVal *other = dynamic_cast<BoolVal*>(e);
+    if (other == NULL) {
+        return false;
+    } else {
+        return (this->val == other->val);
+    }
+}
+
+Expr* BoolVal::to_expr() {
+    return new BoolExpr(this->val);
+}
+
+Val* BoolVal::add_to(Val *other) {
+    throw std::runtime_error("addition of non number");
+}
+
+Val* BoolVal::mult_with(Val *other) {
+    throw std::runtime_error("mult of non number");
+}
+
+void BoolVal::print(std::ostream &stream) {
+    stream << this->val;
+}
+
+bool BoolVal::is_true() {
+    return this->val;
+}

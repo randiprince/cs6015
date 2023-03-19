@@ -171,7 +171,7 @@ void MultExpr::pretty_print(std::ostream &stream) {
 }
 
 void MultExpr::pretty_print_at(std::ostream &stream, precedence_t ptype, long *pos) {
-    if (ptype == prec_mult) {
+    if (ptype >= prec_mult) {
         stream << "(";
     }
     this->lhs->pretty_print_at(stream, prec_mult, pos);
@@ -237,18 +237,18 @@ bool LetExpr::equals(Expr *e) {
     if (other == NULL){
         return false;
     } else {
-        return ((this->lhs == other->lhs) &&
-                (this->rhs->equals(other->rhs)) &&
-                (this->body->equals(other->body)));
+        return ((this->lhs == other->lhs)
+        && (this->rhs->equals(other->rhs))
+        && (this->body->equals(other->body)));
     }
 }
 
 Val* LetExpr::interp() {
-    std::string LHS = this->lhs;
-    Expr* RHS = this->rhs;
-    Expr* inBody = this->body;
-    Val* newRHS = RHS->interp();
-    return inBody->subst(LHS, newRHS->to_expr())->interp();
+    std::string lhsNew = this->lhs;
+    Expr* rhsNew = this->rhs;
+    Expr* bodyNew = this->body;
+    Val* rhsVal = rhsNew->interp();
+    return bodyNew->subst(lhsNew, rhsVal->to_expr())->interp();
 }
  /* should return true only if the right-hand side or body expression contains a variable. */
 bool LetExpr::has_variable() {
@@ -305,5 +305,208 @@ void LetExpr::pretty_print_at(std::ostream &stream, precedence_t ptype, long *po
     this->body->pretty_print_at(stream, prec_none, pos);
     if (ptype >= prec_let) {
         stream << ")";
+    }
+}
+
+/***************************************************
+* BoolExpr method definitions                       *
+****************************************************/
+BoolExpr::BoolExpr(bool val){
+    this->val = val;
+}
+
+bool BoolExpr::equals(Expr *e) {
+    BoolExpr *other = dynamic_cast<BoolExpr*>(e);
+    if (other == NULL) {
+        return false;
+    } else {
+        return (this->val == other->val);
+    }
+}
+
+Val* BoolExpr::interp() {
+    return new BoolVal(this->val);
+}
+
+bool BoolExpr::has_variable() {
+    return false;
+}
+
+Expr* BoolExpr::subst(std::string s, Expr *e) {
+    return this;
+}
+
+void BoolExpr::print(std::ostream &stream) {
+    if (this->val == true) {
+        stream << "_true";
+    } else {
+        stream << "_false";
+    }
+}
+
+void BoolExpr::pretty_print(std::ostream &stream) {
+    pretty_print_at(stream, prec_none, 0);
+}
+
+void BoolExpr::pretty_print_at(std::ostream &stream, precedence_t ptype, long *pos) {
+    print(stream);
+}
+
+/***************************************************
+* IfExpr method definitions                       *
+****************************************************/
+IfExpr::IfExpr(Expr *ifCondition, Expr *thenCondition, Expr *elseCondition) {
+    this->ifCondition = ifCondition;
+    this->thenCondition = thenCondition;
+    this->elseConditon = elseCondition;
+}
+
+bool IfExpr::equals(Expr *e) {
+    IfExpr *other = dynamic_cast<IfExpr*>(e);
+    if (other == NULL) {
+        return false;
+    } else {
+        return (this->ifCondition)->equals(other->ifCondition)
+        && (this->thenCondition)->equals(other->thenCondition)
+        && (this->elseConditon)->equals(other->elseConditon);
+    }
+}
+
+Val* IfExpr::interp() {
+    if ((this->ifCondition->interp())->is_true()) {
+        return this->thenCondition->interp();
+    } else {
+        return this->elseConditon->interp();
+    }
+}
+
+bool IfExpr::has_variable() {
+    return ((ifCondition->has_variable())
+    || (thenCondition->has_variable())
+    || (elseConditon->has_variable()));
+}
+
+Expr* IfExpr::subst(std::string s, Expr *e) {
+    Expr *ifConditionNew = ifCondition->subst(s, e);
+    Expr *thenConditionNew = thenCondition->subst(s, e);
+    Expr *elseConditionNew = elseConditon->subst(s, e);
+    return new IfExpr(ifConditionNew, thenConditionNew, elseConditionNew);
+}
+
+void IfExpr::print(std::ostream &stream) {
+    Expr *ifConditionNew = ifCondition;
+    Expr *thenConditionNew = thenCondition;
+    Expr *elseConditionNew = elseConditon;
+    stream << "(_if ";
+    ifConditionNew->print(stream);
+    stream << " _then ";
+    thenConditionNew->print(stream);
+    stream << " _else ";
+    elseConditionNew->print(stream);
+    stream << ")";
+}
+
+void IfExpr::pretty_print(std::ostream &stream) {
+    long pos = 0;
+    stream << "_if ";
+    this->ifCondition->pretty_print_at(stream, prec_none, &pos);
+    stream << "\n";
+    pos = stream.tellp();
+    stream << "_then ";
+    this->thenCondition->pretty_print_at(stream, prec_none, &pos);
+    stream << "\n";
+    pos = stream.tellp();
+    stream << "_else ";
+    this->elseConditon->pretty_print_at(stream, prec_none, &pos);
+}
+
+void IfExpr::pretty_print_at(std::ostream &stream, precedence_t ptype, long *pos) {
+    if (ptype >= prec_eq) {
+        stream << "(";
+    }
+    long currentPos = stream.tellp();
+    long spaces = currentPos - *pos;
+    stream << "_if ";
+    this->ifCondition->pretty_print_at(stream, prec_none, pos);
+    stream << "\n";
+    *pos = stream.tellp();
+    int space_count = 0;
+    while (space_count < spaces){
+        stream << " ";
+        space_count++;
+    }
+    stream << "_then ";
+    this->thenCondition->pretty_print_at(stream, prec_none, pos);
+    stream << "\n";
+    space_count = 0;
+    while (space_count < spaces){
+        stream << " ";
+        space_count++;
+    }
+    stream << "_else ";
+    this->elseConditon->pretty_print_at(stream, prec_none, pos);
+    if (ptype >= prec_eq) {
+        stream << ")";
+    }
+}
+
+/***************************************************
+* EqExpr method definitions                       *
+****************************************************/
+EqExpr::EqExpr(Expr *lhs, Expr *rhs) {
+    this->lhs = lhs;
+    this->rhs = rhs;
+}
+
+bool EqExpr::equals(Expr *e) {
+    EqExpr *other = dynamic_cast<EqExpr*>(e);
+    if (other == NULL) {
+        return false;
+    } else {
+        return (this->lhs)->equals(other->lhs)
+        && (this->rhs)->equals(other->rhs);
+    }
+}
+
+Val* EqExpr::interp() {
+    return new BoolVal(this->lhs->interp()->equals(this->rhs->interp()));
+}
+
+bool EqExpr::has_variable() {
+    return this->lhs->has_variable() || this->rhs->has_variable();
+}
+
+Expr* EqExpr::subst(std::string s, Expr *e) {
+    Expr *lhsNew = lhs->subst(s, e);
+    Expr *rhsNew = rhs->subst(s, e);
+    return new EqExpr(lhsNew, rhsNew);
+}
+
+void EqExpr::print(std::ostream &stream) {
+    stream << "(";
+    lhs->print(stream);
+    stream << "==";
+    rhs->print(stream);
+    stream << ")";
+}
+
+void EqExpr::pretty_print(std::ostream &stream) {
+    long pos = 0;
+    lhs->pretty_print_at(stream, prec_eq, &pos);
+    stream << " == ";
+    rhs->pretty_print_at(stream, prec_eq, &pos);
+}
+
+void EqExpr::pretty_print_at(std::ostream &stream, precedence_t ptype, long *pos) {
+    if (ptype > prec_none) {
+        stream << "(";
+        lhs->pretty_print_at(stream, prec_eq, pos);
+        stream << " == ";
+        rhs->pretty_print_at(stream, prec_eq, pos);
+        stream << ")";
+    } else {
+        lhs->pretty_print_at(stream, prec_eq, pos);
+        stream << " == ";
+        rhs->pretty_print_at(stream, prec_eq, pos);
     }
 }

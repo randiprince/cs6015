@@ -17,6 +17,7 @@ public:
     virtual Val* mult_with(Val *other) = 0;
     virtual bool equals(Val *other) = 0;
     virtual void print(std::ostream &stream) = 0;
+    virtual bool is_true() = 0;
 };
 
 class NumVal : public Val {
@@ -28,7 +29,19 @@ public:
     Val* mult_with(Val *other);
     bool equals(Val *other);
     void print(std::ostream &stream);
+    bool is_true();
 };
 
+class BoolVal : public Val {
+public:
+    bool val;
+    BoolVal(bool val);
+    Expr* to_expr();
+    Val* add_to(Val *other);
+    Val* mult_with(Val *other);
+    bool equals(Val *other);
+    void print(std::ostream &stream);
+    bool is_true();
+};
 
 #endif //MSDSCRIPT_VAL_HPP

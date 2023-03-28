@@ -8,6 +8,7 @@
 #include "commandLine.hpp"
 #include "catch.h"
 #include "parse.hpp"
+#include "val.hpp"
 #include <iostream>
 #include <cstdlib>
 
@@ -46,10 +47,11 @@ void use_arguments(int argc, char * argv[]) {
             }
         } else if (argument == "--interp") {
             Expr* input = parse_expr(std::cin);
-            std::cout << input->interp();
+            Val *val = input->interp();
+            std::cout << val->to_string() << "\n";
         } else if (argument == "--print") {
             Expr* input = parse_expr(std::cin);
-            std::cout << input->to_string();
+            input->print(std::cout);
         } else if (argument == "--pretty-print") {
             Expr* input = parse_expr(std::cin);
             std::cout << input->to_string_pretty();

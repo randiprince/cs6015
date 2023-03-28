@@ -20,6 +20,8 @@ Expr *parse_let(std::istream &in);
 std::string parse_keyword(std::istream &in);
 Expr *parse_comparg(std::istream &in);
 Expr *parse_if(std::istream &in);
+Expr* parse_inner(std::istream &in);
+Expr* parse_function(std::istream &in);
 
 
 #endif //MSDSCRIPT_PARSE_HPP

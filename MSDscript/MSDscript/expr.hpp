@@ -45,11 +45,7 @@ public:
 * \return int
 */
     virtual Val* interp() = 0;
-    /**
-* \brief function to determine if the expr has a varExpr
-* \return boolean
-*/
-    virtual bool has_variable() = 0;
+
 
     /**
 * \brief Everywhere that the expression (whose subst method is called) contains a variable matching the string,
@@ -84,7 +80,6 @@ public:
     NumExpr(int val);
     bool equals(Expr *expr);
     Val* interp();
-    bool has_variable();
     Expr* subst(std::string s, Expr *e);
     void print(std::ostream& stream);
     void pretty_print(std::ostream& stream);
@@ -104,7 +99,6 @@ public:
     AddExpr(Expr *lhs, Expr *rhs);
     bool equals(Expr *expr);
     Val* interp();
-    bool has_variable();
     Expr* subst(std::string s, Expr *e);
     void print(std::ostream& stream);
     void pretty_print(std::ostream& stream);
@@ -124,7 +118,6 @@ public:
     MultExpr(Expr *lhs, Expr *rhs);
     bool equals(Expr *expr);
     Val* interp();
-    bool has_variable();
     Expr* subst(std::string s, Expr *e);
     void print(std::ostream& stream);
     void pretty_print(std::ostream& stream);
@@ -144,7 +137,6 @@ public:
 
     bool equals(Expr *expr);
     Val* interp();
-    bool has_variable();
     Expr* subst(std::string s, Expr *e);
     void print(std::ostream& stream);
     void pretty_print(std::ostream& stream);
@@ -166,7 +158,6 @@ public:
 
     bool equals(Expr *expr);
     Val* interp();
-    bool has_variable();
     Expr* subst(std::string s, Expr *e);
     void print(std::ostream& stream);
     void pretty_print(std::ostream& stream);
@@ -181,7 +172,6 @@ public:
 
     bool equals(Expr *expr);
     Val* interp();
-    bool has_variable();
     Expr* subst(std::string s, Expr *e);
     void print(std::ostream& stream);
     void pretty_print(std::ostream& stream);
@@ -198,7 +188,6 @@ public:
 
     bool equals(Expr *expr);
     Val* interp();
-    bool has_variable();
     Expr* subst(std::string s, Expr *e);
     void print(std::ostream& stream);
     void pretty_print(std::ostream& stream);
@@ -214,7 +203,36 @@ public:
 
     bool equals(Expr *expr);
     Val* interp();
-    bool has_variable();
+    Expr* subst(std::string s, Expr *e);
+    void print(std::ostream& stream);
+    void pretty_print(std::ostream& stream);
+    void pretty_print_at(std::ostream& stream, precedence_t ptype, long *pos);
+};
+
+class FunExpr : public Expr {
+public:
+    std::string formal_arg;
+    Expr *body;
+
+    FunExpr(std::string formal_arg, Expr *body);
+
+    bool equals(Expr *expr);
+    Val* interp();
+    Expr* subst(std::string s, Expr *e);
+    void print(std::ostream& stream);
+    void pretty_print(std::ostream& stream);
+    void pretty_print_at(std::ostream& stream, precedence_t ptype, long *pos);
+};
+
+class CallExpr : public Expr {
+public:
+    Expr *to_be_called;
+    Expr *actual_arg;
+
+    CallExpr(Expr *to_be_called, Expr *actual_arg);
+
+    bool equals(Expr *expr);
+    Val* interp();
     Expr* subst(std::string s, Expr *e);
     void print(std::ostream& stream);
     void pretty_print(std::ostream& stream);

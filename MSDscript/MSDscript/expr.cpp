@@ -46,12 +46,9 @@ bool NumExpr::equals(Expr *e) {
 }
 
 Val* NumExpr::interp() {
-    return new NumVal(this->val);
+    return new NumVal((unsigned)this->val);
 }
 
-bool NumExpr::has_variable() {
-    return false;
-}
 
 Expr* NumExpr::subst(std::string s, Expr *e) {
     return this;
@@ -88,12 +85,9 @@ bool AddExpr::equals(Expr *e) {
 }
 
 Val* AddExpr::interp() {
-    return (this->lhs->interp()->add_to(this->rhs->interp()));
+    return ((this->lhs->interp())->add_to(this->rhs->interp()));
 }
 
-bool AddExpr::has_variable() {
-    return (this->lhs->has_variable() || this->rhs->has_variable());
-}
 
 Expr* AddExpr::subst(std::string s, Expr *e) {
     return new AddExpr(lhs->subst(s, e), rhs->subst(s, e));
@@ -144,12 +138,9 @@ bool MultExpr::equals(Expr *e) {
 }
 
 Val* MultExpr::interp() {
-    return (this->lhs->interp()->mult_with(this->rhs->interp()));
+    return ((this->lhs->interp())->mult_with(this->rhs->interp()));
 }
 
-bool MultExpr::has_variable() {
-    return (this->lhs->has_variable() || this->rhs->has_variable());
-}
 
 Expr* MultExpr::subst(std::string s, Expr *e) {
     return new MultExpr(lhs->subst(s, e), rhs->subst(s, e));
@@ -202,9 +193,6 @@ Val* VarExpr::interp() {
     throw std::runtime_error("VarExpr has no value!");
 }
 
-bool VarExpr::has_variable() {
-    return true;
-}
 
 Expr* VarExpr::subst(std::string s, Expr *e) {
     if (this->val == s) {
@@ -249,10 +237,6 @@ Val* LetExpr::interp() {
     Expr* bodyNew = this->body;
     Val* rhsVal = rhsNew->interp();
     return bodyNew->subst(lhsNew, rhsVal->to_expr())->interp();
-}
- /* should return true only if the right-hand side or body expression contains a variable. */
-bool LetExpr::has_variable() {
-    return (this->rhs->has_variable() || this->body->has_variable());
 }
 
 Expr* LetExpr::subst(std::string s, Expr *replace) {
@@ -328,10 +312,6 @@ Val* BoolExpr::interp() {
     return new BoolVal(this->val);
 }
 
-bool BoolExpr::has_variable() {
-    return false;
-}
-
 Expr* BoolExpr::subst(std::string s, Expr *e) {
     return this;
 }
@@ -380,11 +360,6 @@ Val* IfExpr::interp() {
     }
 }
 
-bool IfExpr::has_variable() {
-    return ((ifCondition->has_variable())
-    || (thenCondition->has_variable())
-    || (elseConditon->has_variable()));
-}
 
 Expr* IfExpr::subst(std::string s, Expr *e) {
     Expr *ifConditionNew = ifCondition->subst(s, e);
@@ -469,12 +444,9 @@ bool EqExpr::equals(Expr *e) {
 }
 
 Val* EqExpr::interp() {
-    return new BoolVal(this->lhs->interp()->equals(this->rhs->interp()));
+    return new BoolVal((this->lhs->interp())->equals(this->rhs->interp()));
 }
 
-bool EqExpr::has_variable() {
-    return this->lhs->has_variable() || this->rhs->has_variable();
-}
 
 Expr* EqExpr::subst(std::string s, Expr *e) {
     Expr *lhsNew = lhs->subst(s, e);
@@ -509,4 +481,85 @@ void EqExpr::pretty_print_at(std::ostream &stream, precedence_t ptype, long *pos
         stream << " == ";
         rhs->pretty_print_at(stream, prec_eq, pos);
     }
+}
+
+FunExpr::FunExpr(std::string formal_arg, Expr *body) {
+    this->formal_arg = formal_arg;
+    this->body = body;
+}
+
+bool FunExpr::equals(Expr *e) {
+    FunExpr *other = dynamic_cast<FunExpr*>(e);
+    if (other == NULL) {
+        return false;
+    } else {
+        return (this->formal_arg == other->formal_arg) &&
+                (this->body)->equals(other->body);
+    }
+}
+
+Val* FunExpr::interp() {
+    return new FunVal(this->formal_arg, this->body);
+}
+
+Expr* FunExpr::subst(std::string s, Expr *e) {
+    if (s == formal_arg) {
+        return new FunExpr(formal_arg, body);
+    }
+    return new FunExpr(formal_arg, body->subst(s, e));
+}
+
+void FunExpr::print(std::ostream &stream) {
+    stream << "(_fun (" << formal_arg << ") ";
+    body->print(stream);
+    stream << ")";
+}
+
+void FunExpr::pretty_print(std::ostream &stream) {
+
+}
+
+void FunExpr::pretty_print_at(std::ostream &stream, precedence_t ptype, long *pos) {
+
+}
+
+CallExpr::CallExpr(Expr *to_be_called, Expr *actual_arg) {
+    this->to_be_called = to_be_called;
+    this->actual_arg = actual_arg;
+
+}
+
+bool CallExpr::equals(Expr *e) {
+    CallExpr *other = dynamic_cast<CallExpr*>(e);
+    if (other == NULL) {
+        return false;
+    } else {
+        return (this->to_be_called)->equals(other->to_be_called) &&
+               (this->actual_arg)->equals(other->actual_arg);
+    }
+}
+
+Val* CallExpr::interp() {
+    return to_be_called->interp()->call(actual_arg->interp());
+}
+
+Expr* CallExpr::subst(std::string s, Expr *e) {
+    Expr *to_be_called_new = to_be_called->subst(s, e);
+    Expr *actual_arg_new = actual_arg->subst(s, e);
+    return new CallExpr(to_be_called_new, actual_arg_new);
+}
+
+void CallExpr::print(std::ostream &stream) {
+    to_be_called->print(stream);
+    stream << "(";
+    actual_arg->print(stream);
+    stream << ")";
+}
+
+void CallExpr::pretty_print(std::ostream &stream) {
+
+}
+
+void CallExpr::pretty_print_at(std::ostream &stream, precedence_t ptype, long *pos) {
+
 }

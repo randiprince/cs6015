@@ -104,22 +104,129 @@ TEST_CASE("Test VarExpr equals") {
 * \@brief Test LetExpr equals
 * Tests of LetExpr equals function
 */
-TEST_CASE("Test LetExpr equals") {
+TEST_CASE("Test BoolExpr equals") {
 
-    SECTION("LetExpr should be TRUE") {
-        CHECK((new LetExpr("R", new NumExpr(5), new AddExpr(new VarExpr("R"), new NumExpr(3))))
-                    -> equals(new LetExpr("R", new NumExpr(5), new AddExpr(new VarExpr("R"), new NumExpr(3)))) == true);
-        CHECK((new LetExpr("R", new NumExpr(5), new MultExpr(new VarExpr("R"), new NumExpr(3))))
-                      -> equals(new LetExpr("R", new NumExpr(5), new MultExpr(new VarExpr("R"), new NumExpr(3)))) == true);
+    SECTION("BoolExpr should be TRUE") {
+        CHECK((new BoolExpr(true))->equals(new BoolExpr(true)) == true);
+        CHECK((new BoolExpr(false))->equals(new BoolExpr(false)) == true);
     }
 
-    SECTION("LetExpr should be FALSE") {
-        CHECK((new LetExpr("R", new NumExpr(5), new AddExpr(new VarExpr("R"), new NumExpr(3))))
-                      -> equals(new LetExpr("R", new NumExpr(5), new AddExpr(new VarExpr("r"), new NumExpr(3)))) == false);
-        CHECK((new LetExpr("R", new NumExpr(5), new MultExpr(new VarExpr("R"), new NumExpr(3))))
-                      -> equals(new LetExpr("R", new NumExpr(5), new MultExpr(new VarExpr("r"), new NumExpr(3)))) == false);
-        CHECK((new LetExpr("R", new NumExpr(5), new MultExpr(new VarExpr("R"), new NumExpr(3))))
-                      -> equals(NULL) == false);
+    SECTION("BoolExpr should be FALSE") {
+        CHECK((new BoolExpr(true))->equals(new BoolExpr(false)) == false);
+        CHECK((new BoolExpr(false))->equals(new BoolExpr(true)) == false);
+    }
+
+}
+
+TEST_CASE("Test IfExpr equals") {
+
+    SECTION("IfExpr should be TRUE") {
+        CHECK((new IfExpr (new BoolExpr(true), new NumExpr(3), new NumExpr(2)))->equals(new IfExpr (new BoolExpr(true), new NumExpr(3), new NumExpr(2))) == true);
+        CHECK((new IfExpr (new BoolExpr(false), new NumExpr(0), new NumExpr(-1)))->equals(new IfExpr (new BoolExpr(false), new NumExpr(0), new NumExpr(-1))) == true);
+    }
+
+    SECTION("IfExpr should be FALSE") {
+        CHECK((new IfExpr (new BoolExpr(true), new NumExpr(3), new NumExpr(2)))
+        ->equals(new IfExpr (new BoolExpr(false), new NumExpr(3), new NumExpr(2))) == false);
+        CHECK((new IfExpr (new BoolExpr(true), new NumExpr(3), new NumExpr(2)))
+        ->equals(new IfExpr (new BoolExpr(true), new NumExpr(-3), new NumExpr(2))) == false);
+    }
+}
+
+TEST_CASE("Test EqExpr equals") {
+
+    SECTION("EqExpr should be TRUE") {
+        CHECK((new EqExpr(new NumExpr(1), new NumExpr(2)))
+                      ->equals(new EqExpr(new NumExpr(1), new NumExpr(2))) == true);
+        CHECK((new EqExpr(new NumExpr(1000), new NumExpr(2001)))
+                      ->equals(new EqExpr(new NumExpr(1000), new NumExpr(2001))) == true);
+    }
+
+    SECTION("EqExpr should be FALSE") {
+        CHECK((new EqExpr(new NumExpr(1), new NumExpr(2)))
+        ->equals(new EqExpr(new NumExpr(0), new NumExpr(2))) == false);
+        CHECK((new EqExpr(new NumExpr(1), new NumExpr(2)))
+        ->equals(new EqExpr(new NumExpr(-1), new NumExpr(2))) == false);
+    }
+
+}
+
+TEST_CASE("Test FunExpr equals") {
+
+    SECTION("FunExpr should be TRUE") {
+        CHECK((new FunExpr("x", new NumExpr(2)))
+                      ->equals(new FunExpr("x", new NumExpr(2))) == true);
+        CHECK((new FunExpr("y", new NumExpr(2001)))
+                      ->equals(new FunExpr("y", new NumExpr(2001))) == true);
+    }
+
+    SECTION("FunExpr should be FALSE") {
+        CHECK((new FunExpr("x", new NumExpr(2)))
+                      ->equals(new FunExpr("x", new NumExpr(-2))) == false);
+        CHECK((new FunExpr("y", new NumExpr(2001)))
+                      ->equals(new FunExpr("y", new NumExpr(2002))) == false);
+    }
+}
+
+TEST_CASE("Test CallExpr equals") {
+
+    SECTION("CallExpr should be TRUE") {
+        CHECK((new CallExpr(new NumExpr(1), new NumExpr(2)))
+                      ->equals(new CallExpr(new NumExpr(1), new NumExpr(2))) == true);
+        CHECK((new CallExpr(new NumExpr(1000), new NumExpr(2001)))
+                      ->equals(new CallExpr(new NumExpr(1000), new NumExpr(2001))) == true);
+    }
+
+    SECTION("CallExpr should be FALSE") {
+        CHECK((new CallExpr(new NumExpr(1), new NumExpr(2)))
+                      ->equals(new CallExpr(new NumExpr(0), new NumExpr(2))) == false);
+        CHECK((new CallExpr(new NumExpr(1), new NumExpr(2)))
+                      ->equals(new CallExpr(new NumExpr(-1), new NumExpr(2))) == false);
+    }
+
+}
+
+TEST_CASE("Test FunVal equals") {
+
+    SECTION("FunVal should be TRUE") {
+        CHECK((new FunVal("x", new NumExpr(2)))
+                      ->equals(new FunVal("x", new NumExpr(2))) == true);
+        CHECK((new FunVal("y", new NumExpr(2001)))
+                      ->equals(new FunVal("y", new NumExpr(2001))) == true);
+    }
+
+    SECTION("FunVal should be FALSE") {
+        CHECK((new FunVal("x", new NumExpr(2)))
+                      ->equals(new FunVal("x", new NumExpr(-2))) == false);
+        CHECK((new FunVal("y", new NumExpr(2001)))
+                      ->equals(new FunVal("y", new NumExpr(2002))) == false);
+    }
+}
+
+TEST_CASE("Test BoolVal equals") {
+
+    SECTION("BoolVal should be TRUE") {
+        CHECK((new BoolVal(true))->equals(new BoolVal(true)) == true);
+        CHECK((new BoolVal(false))->equals(new BoolVal(false)) == true);
+    }
+
+    SECTION("BoolVal should be FALSE") {
+        CHECK((new BoolVal(true))->equals(new BoolVal(false)) == false);
+        CHECK((new BoolVal(false))->equals(new BoolVal(true)) == false);
+    }
+
+}
+
+TEST_CASE("Test NumVal equals") {
+
+    SECTION("NumVal should be TRUE") {
+        CHECK((new NumVal(5))->equals(new NumVal(5)) == true);
+        CHECK((new NumVal(-10))->equals(new NumVal(-10)) == true);
+    }
+
+    SECTION("NumVal should be FALSE") {
+        CHECK((new NumVal(0))->equals(new NumVal(1)) == false);
+        CHECK((new NumVal(-505))->equals(new NumVal(505)) == false);
     }
 
 }
@@ -166,51 +273,6 @@ TEST_CASE("Interp Function") {
     }
 }
 
-/**
-* \@brief Test has_variable function
-* Tests of has_variable function for each class
-*/
-TEST_CASE("Has VarExpr Function") {
-    
-    SECTION("NUM has variable") {
-        CHECK((new NumExpr(123))->has_variable() == false);
-        CHECK((new NumExpr(-85))->has_variable() == false);
-        CHECK((new NumExpr(0))->has_variable() == false);
-    }
-    
-    SECTION("ADD has variable") { //add/fix
-        CHECK((new AddExpr(new NumExpr(1), new NumExpr(2)))->has_variable() == false);
-        CHECK((new AddExpr(new NumExpr(1), new NumExpr(2)))->has_variable() == false);
-        CHECK((new AddExpr(new NumExpr(1), new NumExpr(2)))->has_variable() == false);
-        CHECK((new AddExpr(new VarExpr("x"), new NumExpr(2)))->has_variable() == true);
-
-    }
-    
-    SECTION("MULT has variable") { //fix
-        CHECK((new MultExpr(new NumExpr(1), new NumExpr(2)))->has_variable() == false);
-        CHECK((new MultExpr(new NumExpr(0), new NumExpr(0)))->has_variable() == false);
-        CHECK((new MultExpr(new NumExpr(-50), new NumExpr(4)))->has_variable() == false);
-        CHECK((new MultExpr(new VarExpr("a"), new NumExpr(4)))->has_variable() == true);
-    }
-    
-    SECTION("VARIABLE has variable") {
-        CHECK((new VarExpr("R"))->has_variable() == true);
-        CHECK((new VarExpr("codingisfun"))->has_variable() == true);
-        CHECK((new VarExpr(""))->has_variable() == true);
-        CHECK((new VarExpr(" "))->has_variable() == true);
-        CHECK((new AddExpr(new VarExpr("m"), new NumExpr(21)))->has_variable() == true);
-        CHECK((new MultExpr(new VarExpr("s"), new NumExpr(23)))->has_variable() == true);
-    }
-
-    SECTION("LetExpr has variable") {
-        CHECK((new LetExpr("R", new NumExpr(5), new AddExpr(new VarExpr("R"), new NumExpr(3))))
-                      -> has_variable() == true);
-        CHECK((new LetExpr("R", new NumExpr(5), new MultExpr(new VarExpr("R"), new NumExpr(3))))
-                      -> has_variable() == true);
-        CHECK((new LetExpr("R", new NumExpr(5), new MultExpr(new VarExpr("R"), new NumExpr(3))))
-                      -> has_variable() == true);
-    }
-}
 
 /**
 * \@brief Test subst function
@@ -504,4 +566,15 @@ TEST_CASE("parse") {
     CHECK( parse_str("z * (x + y)")
                    ->equals(new MultExpr(new VarExpr("z"),
                                      new AddExpr(new VarExpr("x"), new VarExpr("y"))) ));
+}
+
+TEST_CASE("Val tests for thrown error") {
+    CHECK_THROWS_WITH((new BoolVal(true))->call(0), "cannot call on boolvals");
+    CHECK_THROWS_WITH((new NumVal(true))->call(0), "cannot call on numvals");
+    CHECK_THROWS_WITH((new NumVal(true))->is_true(), "num val is not a boolean");
+    CHECK_THROWS_WITH((new BoolVal(true))->add_to(0), "addition of non number");
+    CHECK_THROWS_WITH((new BoolVal(true))->mult_with(0), "mult of non number");
+    CHECK_THROWS_WITH((new FunVal("x", new NumExpr(1)))->add_to(0), "addition of non number");
+    CHECK_THROWS_WITH((new FunVal("x", new NumExpr(1)))->mult_with(0), "mult of non number");
+    CHECK_THROWS_WITH((new FunVal("x", new NumExpr(1)))->is_true(), "Fun Val is not a boolean");
 }

@@ -32,26 +32,32 @@ Expr* parse_num(std::istream &in) {
     if (in.peek() == '-') {
         negative = true;
         consume(in, '-');
+        if (!isdigit(in.peek())){
+            throw std::runtime_error("invalid input");
+        }
     }
 
     while (1) {
         int c = in.peek();
         if (isdigit(c)) {
             consume(in, c);
-            n = n*10 + (c - '0');
+            if (n > (INT_MAX - (c - '0')) / 10) {
+                throw std::runtime_error("input too large. int overflow!");
+            } else {
+                n = n*10 + (c - '0');
+            }
         } else {
             break;
         }
     }
     if (negative) {
-        n = -n;
+        n = n * -1;
     }
     return new NumExpr(n);
 }
 
 Expr *parse_expr(std::istream &in) {
-    Expr *e;
-    e = parse_comparg(in);
+    Expr *e = parse_comparg(in);
     skip_whitespace(in);
     int c = in.peek();
     if (c == '=') {
@@ -70,8 +76,7 @@ Expr *parse_expr(std::istream &in) {
 }
 
 Expr* parse_addend(std::istream &in) {
-    Expr *e;
-    e = parse_multicand(in);
+    Expr *e = parse_multicand(in);
     skip_whitespace(in);
     int c = in.peek();
     if (c == '*') {
@@ -83,7 +88,7 @@ Expr* parse_addend(std::istream &in) {
     }
 }
 
-Expr* parse_multicand(std::istream &in) {
+Expr* parse_inner(std::istream &in) {
     skip_whitespace(in);
     int c = in.peek();
     if ((c == '-') || isdigit(c)) {
@@ -110,6 +115,8 @@ Expr* parse_multicand(std::istream &in) {
             return new BoolExpr(false);
         } else if (kw == "_if") {
             return parse_if(in);
+        } else if (kw == "_fun") {
+            return parse_function(in);
         } else {
             throw std::runtime_error("error in trying to parse part of multicand using a keyword!!!!!");
         }
@@ -197,4 +204,39 @@ Expr *parse_if(std::istream &in) {
     }
     Expr *elseCondition = parse_expr(in);
     return new IfExpr(ifCondition, thenCondition, elseCondition);
+}
+
+Expr *parse_multicand(std::istream &in) {
+    skip_whitespace(in);
+    Expr *e = parse_inner(in);
+    skip_whitespace(in);
+    while (in.peek() == '(') {
+        consume(in, '(');
+        skip_whitespace(in);
+        Expr* actual_arg = parse_expr(in);
+        skip_whitespace(in);
+        consume(in, ')');
+        e = new CallExpr(e, actual_arg);
+    }
+    return e;
+}
+
+Expr* parse_function(std::istream &in) {
+    skip_whitespace(in);
+    std::string formal_arg;
+    skip_whitespace(in);
+
+    while (in.peek() == '(') {
+        consume(in, '(');
+        skip_whitespace(in);
+        formal_arg = parse_var(in)->to_string_pretty();
+        skip_whitespace(in);
+        int c = in.get();
+        if (c != ')') {
+            throw std::runtime_error("closing parenthesis expected");
+        }
+    }
+    skip_whitespace(in);
+    Expr* body = parse_expr(in);
+    return new FunExpr(formal_arg, body);
 }

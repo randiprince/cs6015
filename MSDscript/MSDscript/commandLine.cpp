@@ -46,14 +46,14 @@ void use_arguments(int argc, char * argv[]) {
                 exit(1);
             }
         } else if (argument == "--interp") {
-            Expr* input = parse_expr(std::cin);
-            Val *val = input->interp();
+            PTR(Expr) input = parse_expr(std::cin);
+            PTR(Val) val = input->interp();
             std::cout << val->to_string() << "\n";
         } else if (argument == "--print") {
-            Expr* input = parse_expr(std::cin);
+            PTR(Expr) input = parse_expr(std::cin);
             input->print(std::cout);
         } else if (argument == "--pretty-print") {
-            Expr* input = parse_expr(std::cin);
+            PTR(Expr) input = parse_expr(std::cin);
             std::cout << input->to_string_pretty();
         } else {
             std::cerr << "Command not found" << std::endl;

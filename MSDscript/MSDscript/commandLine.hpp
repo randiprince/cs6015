@@ -12,6 +12,7 @@
 
 #ifndef commandLine_hpp
 #define commandLine_hpp
+#include "pointer.hpp"
 
 
 /**

@@ -9,8 +9,8 @@ NumVal::NumVal(int val){
     this->val = val;
 }
 
-bool NumVal::equals(Val *e) {
-    NumVal *other = dynamic_cast<NumVal*>(e);
+bool NumVal::equals(PTR(Val) e) {
+    PTR(NumVal) other = CAST(NumVal)(e);
     if (other == NULL) {
         return false;
     } else {
@@ -18,24 +18,24 @@ bool NumVal::equals(Val *e) {
     }
 }
 
-Expr* NumVal::to_expr() {
-    return new NumExpr(this->val);
+PTR(Expr) NumVal::to_expr() {
+    return NEW(NumExpr)(this->val);
 }
 
-Val* NumVal::add_to(Val *other) {
-    NumVal *other_num = dynamic_cast<NumVal*>(other);
+PTR(Val) NumVal::add_to(PTR(Val) other) {
+    PTR(NumVal) other_num = CAST(NumVal)(other);
     if (other_num == NULL){
         throw std::runtime_error("add of non-number");
     }
-    return new NumVal((unsigned)this->val + (unsigned)other_num->val);
+    return NEW(NumVal)((unsigned)this->val + (unsigned)other_num->val);
 }
 
-Val* NumVal::mult_with(Val *other) {
-    NumVal *other_num = dynamic_cast<NumVal*>(other);
+PTR(Val) NumVal::mult_with(PTR(Val) other) {
+    PTR(NumVal) other_num = CAST(NumVal)(other);
     if (other_num == NULL){
         throw std::runtime_error("mult of non-number");
     }
-    return new NumVal((unsigned)this->val * (unsigned)other_num->val);
+    return NEW(NumVal)((unsigned)this->val * (unsigned)other_num->val);
 }
 
 void NumVal::print(std::ostream &stream) {
@@ -46,7 +46,7 @@ bool NumVal::is_true() {
     throw std::runtime_error("num val is not a boolean");
 }
 
-Val* NumVal::call(Val *actual_arg) {
+PTR(Val) NumVal::call(PTR(Val) actual_arg) {
     throw std::runtime_error("cannot call on numvals");
 }
 
@@ -54,8 +54,8 @@ BoolVal::BoolVal(bool val) {
     this->val = val;
 }
 
-bool BoolVal::equals(Val *e) {
-    BoolVal *other = dynamic_cast<BoolVal*>(e);
+bool BoolVal::equals(PTR(Val) e) {
+    PTR(BoolVal) other = CAST(BoolVal)(e);
     if (other == NULL) {
         return false;
     } else {
@@ -63,15 +63,15 @@ bool BoolVal::equals(Val *e) {
     }
 }
 
-Expr* BoolVal::to_expr() {
-    return new BoolExpr(this->val);
+PTR(Expr) BoolVal::to_expr() {
+    return NEW(BoolExpr)(this->val);
 }
 
-Val* BoolVal::add_to(Val *other) {
+PTR(Val) BoolVal::add_to(PTR(Val) other) {
     throw std::runtime_error("addition of non number");
 }
 
-Val* BoolVal::mult_with(Val *other) {
+PTR(Val) BoolVal::mult_with(PTR(Val) other) {
     throw std::runtime_error("mult of non number");
 }
 
@@ -87,17 +87,17 @@ bool BoolVal::is_true() {
     return this->val;
 }
 
-Val* BoolVal::call(Val *actual_arg) {
+PTR(Val) BoolVal::call(PTR(Val) actual_arg) {
     throw std::runtime_error("cannot call on boolvals");
 }
 
-FunVal::FunVal(std::string formal_val, Expr *body) {
+FunVal::FunVal(std::string formal_val, PTR(Expr) body) {
     this->formal_val = formal_val;
     this->body = body;
 }
 
-bool FunVal::equals(Val *e) {
-    FunVal *other = dynamic_cast<FunVal*>(e);
+bool FunVal::equals(PTR(Val) e) {
+    PTR(FunVal) other = CAST(FunVal)(e);
     if (other == NULL) {
         return false;
     } else {
@@ -107,15 +107,15 @@ bool FunVal::equals(Val *e) {
 }
 
 
-Expr* FunVal::to_expr() {
-    return new FunExpr(formal_val, body);
+PTR(Expr) FunVal::to_expr() {
+    return NEW(FunExpr)(formal_val, body);
 }
 
-Val* FunVal::add_to(Val *other) {
+PTR(Val) FunVal::add_to(PTR(Val) other) {
     throw std::runtime_error("addition of non number");
 }
 
-Val* FunVal::mult_with(Val *other) {
+PTR(Val) FunVal::mult_with(PTR(Val) other) {
     throw std::runtime_error("mult of non number");
 }
 
@@ -129,7 +129,7 @@ bool FunVal::is_true() {
     throw std::runtime_error("Fun Val is not a boolean");
 }
 
-Val* FunVal::call(Val *actual_arg) {
+PTR(Val) FunVal::call(PTR(Val) actual_arg) {
     return (body->subst(formal_val, actual_arg->to_expr()))->interp();
 }
 

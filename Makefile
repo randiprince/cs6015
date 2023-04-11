@@ -5,11 +5,11 @@
 #*.o targets compile .cpp and .h files into an o file
 #clean removes all files and executables
 
-CXXSOURCE = MSDscript/MSDscript/main.o MSDscript/MSDscript/commandLine.o MSDscript/MSDscript/expr.o MSDscript/MSDscript/parse.o MSDscript/MSDscript/val.o
+CXXSOURCE = MSDscript/MSDscript/main.o MSDscript/MSDscript/commandLine.o MSDscript/MSDscript/expr.o MSDscript/MSDscript/parse.o MSDscript/MSDscript/val.o MSDscript/MSDscript/env.o
 CXXSOURCE2 = test_msdscript/test_msdscript/main.o test_msdscript/test_msdscript/exec.o
-HEADERS = MSDscript/MSDscript/commandLine.hpp MSDscript/MSDscript/expr.hpp MSDscript/MSDscript/parse.hpp MSDscript/MSDscript/val.hpp
+HEADERS = MSDscript/MSDscript/commandLine.hpp MSDscript/MSDscript/expr.hpp MSDscript/MSDscript/parse.hpp MSDscript/MSDscript/val.hpp MSDscript/MSDscript/env.hpp
 HEADERS2 = test_msdscript/test_msdscript/exec.h
-CXXFLAGS = --std=c++14
+CXXFLAGS = --std=c++14 -fsanitize=undefined -fno-sanitize-recover=undefined -O2
 COMPILER = c++
 COMPILEOPTS = -c
 LINKINGOPTS = -o
@@ -35,8 +35,8 @@ test: MSDscript
 main.o: MSDscript/MSDscript/main.cpp $(HEADERS)
 	$(COMPILER) $(CXXFLAGS) $(COMPILEOPTS) main.cpp
 
-main.o: test_msdscript/test_msdscript/main.cpp $(HEADERS2)
-	$(COMPILER) $(CXXFLAGS) $(COMPILEOPTS) main.cpp
+#main.o: test_msdscript/test_msdscript/main.cpp $(HEADERS2)
+#	$(COMPILER) $(CXXFLAGS) $(COMPILEOPTS) main.cpp
 	
 commandLine.o: MSDscript/MSDscript/commandLine.cpp $(HEADERS)
 	$(COMPILER) $(CXXFLAGS) $(COMPILEOPTS) commandLine.cpp
@@ -46,12 +46,15 @@ expr.o: MSDscript/MSDscript/expr.cpp $(HEADERS)
 	
 parse.o: MSDscript/MSDscript/parse.cpp $(HEADERS)
 	$(COMPILER) $(CXXFLAGS) $(COMPILEOPTS) parse.cpp
+	
+val.o: MSDscript/MSDscript/val.cpp $(HEADERS)
+	$(COMPILER) $(CXXFLAGS) $(COMPILEOPTS) val.cpp
+	
+env.o: MSDscript/MSDscript/env.cpp $(HEADERS)
+	$(COMPILER) $(CXXFLAGS) $(COMPILEOPTS) env.cpp
 
 exec.o: test_msdscript/test_msdscript/exec.cpp $(HEADERS2)
 	$(COMPILER) $(CXXFLAGS) $(COMPILEOPTS) exec.cpp
-
-val.o: test_msdscript/test_msdscript/val.cpp $(HEADERS2)
-	$(COMPILER) $(CXXFLAGS) $(COMPILEOPTS) val.cpp
 
 clean:
 	rm -rf MSDscript/MSDscript/*.o MSDscript/MSDscript/MSDscript

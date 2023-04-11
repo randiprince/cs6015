@@ -18,10 +18,6 @@ bool NumVal::equals(PTR(Val) e) {
     }
 }
 
-PTR(Expr) NumVal::to_expr() {
-    return NEW(NumExpr)(this->val);
-}
-
 PTR(Val) NumVal::add_to(PTR(Val) other) {
     PTR(NumVal) other_num = CAST(NumVal)(other);
     if (other_num == NULL){
@@ -63,10 +59,6 @@ bool BoolVal::equals(PTR(Val) e) {
     }
 }
 
-PTR(Expr) BoolVal::to_expr() {
-    return NEW(BoolExpr)(this->val);
-}
-
 PTR(Val) BoolVal::add_to(PTR(Val) other) {
     throw std::runtime_error("addition of non number");
 }
@@ -91,9 +83,10 @@ PTR(Val) BoolVal::call(PTR(Val) actual_arg) {
     throw std::runtime_error("cannot call on boolvals");
 }
 
-FunVal::FunVal(std::string formal_val, PTR(Expr) body) {
+FunVal::FunVal(std::string formal_val, PTR(Expr) body, PTR(Env) env) {
     this->formal_val = formal_val;
     this->body = body;
+    this->env = env;
 }
 
 bool FunVal::equals(PTR(Val) e) {
@@ -106,10 +99,6 @@ bool FunVal::equals(PTR(Val) e) {
     }
 }
 
-
-PTR(Expr) FunVal::to_expr() {
-    return NEW(FunExpr)(formal_val, body);
-}
 
 PTR(Val) FunVal::add_to(PTR(Val) other) {
     throw std::runtime_error("addition of non number");
@@ -130,7 +119,7 @@ bool FunVal::is_true() {
 }
 
 PTR(Val) FunVal::call(PTR(Val) actual_arg) {
-    return (body->subst(formal_val, actual_arg->to_expr()))->interp();
+    return body->interp(NEW(ExtendedEnv)(formal_val, actual_arg, env));
 }
 
 std::string Val::to_string() {

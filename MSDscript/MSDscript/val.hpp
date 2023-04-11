@@ -8,12 +8,12 @@
 
 #include <ostream>
 #include "pointer.hpp"
+#include "expr.hpp"
 
 class Expr;
 
 class Val {
 public:
-    virtual PTR(Expr) to_expr() = 0;
     virtual PTR(Val) add_to(PTR(Val) other) = 0;
     virtual PTR(Val) mult_with(PTR(Val) other) = 0;
     virtual bool equals(PTR(Val) other) = 0;
@@ -27,7 +27,6 @@ class NumVal : public Val {
 public:
     int val;
     NumVal(int val);
-    PTR(Expr) to_expr();
     PTR(Val) add_to(PTR(Val) other);
     PTR(Val) mult_with(PTR(Val) other);
     bool equals(PTR(Val) other);
@@ -40,7 +39,6 @@ class BoolVal : public Val {
 public:
     bool val;
     BoolVal(bool val);
-    PTR(Expr) to_expr();
     PTR(Val) add_to(PTR(Val) other);
     PTR(Val) mult_with(PTR(Val) other);
     bool equals(PTR(Val) other);
@@ -52,10 +50,10 @@ public:
 class FunVal : public Val {
 public:
     std::string formal_val;
-    Expr* body;
+    PTR(Expr) body;
+    PTR(Env) env;
 
-    FunVal(std::string formal_val, Expr* body);
-    PTR(Expr) to_expr();
+    FunVal(std::string formal_val, PTR(Expr) body, PTR(Env) env);
     PTR(Val) add_to(PTR(Val) other);
     PTR(Val) mult_with(PTR(Val) other);
     bool equals(PTR(Val) other);

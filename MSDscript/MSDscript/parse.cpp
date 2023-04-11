@@ -216,7 +216,7 @@ PTR(Expr) parse_multicand(std::istream &in) {
         PTR(Expr) actual_arg = parse_expr(in);
         skip_whitespace(in);
         consume(in, ')');
-        e = new CallExpr(e, actual_arg);
+        e = NEW(CallExpr)(e, actual_arg);
     }
     return e;
 }

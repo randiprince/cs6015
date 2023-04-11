@@ -11,6 +11,8 @@
 #include "val.hpp"
 #include <iostream>
 #include <cstdlib>
+#include "pointer.hpp"
+#include "env.hpp"
 
 /**
 * \file commandLine.cpp
@@ -47,7 +49,7 @@ void use_arguments(int argc, char * argv[]) {
             }
         } else if (argument == "--interp") {
             PTR(Expr) input = parse_expr(std::cin);
-            PTR(Val) val = input->interp();
+            PTR(Val) val = input->interp(Env::empty);
             std::cout << val->to_string() << "\n";
         } else if (argument == "--print") {
             PTR(Expr) input = parse_expr(std::cin);
